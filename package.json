@@ -1,0 +1,19 @@
+{
+  "name": "nft-wallet",
+  "version": "0.1.0",
+  "description": "DFINITY Internet Computer NFT wallet",
+  "keywords": [
+    "Internet Computer",
+    "Rust",
+    "Svelte",
+    "Canister",
+    "Internet Identity",
+    "NFT"
+  ],
+  "scripts": {
+    "build": "cd frontend && npm run build",
+    "install": "cd frontend && npm install --production=false",
+    "dev": "cd frontend && npm run dev",
+    "copy:types": "rsync -avr .dfx/$(echo ${DFX_NETWORK:-'**'})/canisters/** --exclude='assets/' --exclude='idl/' --exclude='*.wasm' --delete frontend/src/declarations"
+  }
+}
