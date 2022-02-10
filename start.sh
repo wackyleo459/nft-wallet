@@ -1,6 +1,6 @@
 killall dfx replica
 set -e
-git submodule update --recursive
+git submodule update --init --recursive
 rm -rf .dfx/ ./internet-identity/.dfx/
 dfx start --background
 pushd internet-identity
