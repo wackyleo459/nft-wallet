@@ -41,16 +41,11 @@ static URL: Lazy<Url> = Lazy::new(|| {
 fn http_request(req: HttpRequest) -> HttpResponse {
     let url = URL.join(&req.url).unwrap();
     let path = percent_decode_str(url.path()).decode_utf8().unwrap();
-    let path = if path.starts_with('/') {
-        &path[1..]
+    let guess = mime_guess::from_path(&*path).first_or_text_plain();
+    let (mime, witness, body) = if let Some(file) = FRONTEND.get_file(path.trim_start_matches('/')) {
+        (format!("{guess}").into(), witness(&format!("/{}", file.path().to_string_lossy())), file.contents())
     } else {
-        &path
-    };
-    let guess = mime_guess::from_path(path).first_or_text_plain();
-    let (mime, witness, body) = if let Some(file) = FRONTEND.get_file(&*path) {
-        (format!("{guess}").into(), witness(&file.path().to_string_lossy()), file.contents())
-    } else {
-        ("text/html;charset=UTF-8".into(), witness("index.html"), FRONTEND.get_file("index.html").unwrap().contents())
+        ("text/html;charset=UTF-8".into(), witness("/index.html"), FRONTEND.get_file("index.html").unwrap().contents())
     };
     const REPLICA: &str = if cfg!(mainnet) { "https://ic0.app" } else { "localhost:8000" };
     let cert = base64::encode(api::data_certificate().unwrap());
@@ -75,7 +70,7 @@ fn http_request(req: HttpRequest) -> HttpResponse {
 pub fn bake_hashes() {
     let mut hashes = RbTree::new();
     walk_files(&HASHES, |file| {
-        hashes.insert(file.path().to_string_lossy().into_owned(), Hash::try_from(file.contents()).unwrap());
+        hashes.insert(format!("/{}", file.path().to_string_lossy()), Hash::try_from(file.contents()).unwrap());
     });
     api::set_certified_data(&ic_certified_map::labeled_hash(b"http_assets", &hashes.root_hash()));
     HASH_TREE.set(hashes).unwrap();
