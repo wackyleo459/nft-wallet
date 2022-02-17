@@ -28,3 +28,8 @@ sha2 = "0.10"
 
 [lib]
 crate-type = ["cdylib"]
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1

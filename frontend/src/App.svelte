@@ -13,9 +13,14 @@
 <main>
     <a href="/" class="ui">
         <h1>NFT Wallet</h1>
-    </a>
-    <div>
         <CanisterId/>
+    </a>
+
+
+
+    <div class="navbar">
+        <a href="/">Home</a>
+        <a href="/register">Register</a>
         <Authenticator/>
     </div>
     {#if page.nft}
@@ -40,5 +45,25 @@
     }
     div {
         margin-bottom: 40px;
+        margin-top: 20px;
+    }
+    h1 {
+        text-align: center;
+        line-height: 2.5;
+        margin-bottom: 0;
+    }
+    .navbar {
+        outline: double #B484FD;
+        border-radius: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+    .navbar a {
+        float: left;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
     }
 </style>
