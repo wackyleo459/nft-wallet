@@ -174,9 +174,4 @@ struct Storage {
     owned_nfts: BTreeSet<Nft>, // more to come following inter-canister queries
 }
 
-#[update]
-fn wallet_receive() {
-    call::msg_cycles_accept(1_000_000_000_000_u128.saturating_sub(api::canister_balance128()) as u64);
-}
-
 static STORAGE: Lazy<RwLock<Storage>> = Lazy::new(|| RwLock::new(Storage::default()));
