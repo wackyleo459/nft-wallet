@@ -69,12 +69,19 @@
     .register-view {
         margin-top: 20px;
         margin-bottom: 20px;
+        max-width: 550px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
     form {
         border-radius: 15px;
         border: solid 3px white;
     }
     h4 {
+        text-align: center;
+    }
+    p {
         text-align: center;
     }
 </style>

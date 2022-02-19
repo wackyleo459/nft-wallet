@@ -16,10 +16,13 @@
         <CanisterId/>
     </a>
     <Authenticator/>
-
-    <div class="navbar">
-        <a href="/">Home</a>
-        <a href="/register">Register</a>
+    <div class="navButtons">
+        <button type="button" id="home_button" class="btn">
+            <a href="/">Home</a>
+        </button>
+        <button type="button" id="register_button" class="btn">
+            <a href="/register">Register</a>
+        </button>
 
     </div>
 
@@ -59,34 +62,22 @@
         margin-bottom: 0;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     }
-    .navbar {
-        border: solid 4px #2596be;
-        border-radius: 10px;
+    .navButtons {
         display: flex;
-        justify-content: space-between;
+        flex-direction: row;
+        justify-content: space-evenly;
     }
-    .navbar a {
-        float: left;
-        color: #f2f2f2;
-        text-align: center;
-        padding: 14px 16px;
-        text-decoration: none;
-        font-size: 17px;
+    #home_button {
+        border: solid 1px #30ace3;
     }
-    .navbar a.active {
-        background-color: #04AA6D;
-        color: white;
-    }
-
-    .navbar a:hover:not(.active) {
-     background-color: #555;
-        color: white;
+    #register_button {
+        border: solid 1px #893385;
     }
     .content {
         display: flex;
         flex-direction: column;
-        align-items: center;
         justify-content: space-between;
+        align-items: center;
     }
     img {
         position: fixed;
@@ -94,6 +85,10 @@
         bottom: 20px;
         transform: translate(-50%, -50%);
         margin: 0 auto;
+    }
+    button {
+        flex-grow: 1;
+        margin: 5px;
     }
 
 </style>

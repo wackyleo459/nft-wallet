@@ -4,21 +4,22 @@
     import NFTBox from '../components/NFTBox.svelte';
     export let nfts;
 </script>
-
-<ul class="container">
-    {#each nfts as nft}
-        <li class="box">
-            <NFTBox {nft}/>
-        </li>
-    {/each}
-</ul>
+<div class="collection">
+    Collection
+    <ul class="container">
+        {#each nfts as nft}
+            <li class="box">
+                <NFTBox {nft}/>
+            </li>
+        {/each}
+    </ul>
+</div>
 
 <style>
     .container {
         list-style: none;
         display: flex;
         flex-flow: row wrap;
-        justify-content: center;
     }
     .box {
         width: 12em;

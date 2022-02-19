@@ -69,4 +69,8 @@
         color: #666;
         font-size: 14px;
     }
+    .authenticator {
+        display:flex;
+        justify-content: center;
+    }
 </style>
