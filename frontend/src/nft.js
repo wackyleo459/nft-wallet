@@ -6,6 +6,7 @@ import * as wallet from './declarations/nftwallet/nftwallet.did.js';
 import dipCanisterFactory from './dip721';
 import { CID } from 'multiformats/cid';
 import { Base64 } from 'js-base64';
+import mime from 'mime/lite';
 
 const hostOptions = {
     host: isMainnet() 
@@ -79,7 +80,7 @@ export async function fetchNft(principal, index, checkOwner) {
                 url = `https://${cid.toString()}.ipfs.ipfs.io`;
                 break;
             case 2:
-                url = `https://${location.TextContent}.raw.ic0.app/${index}`;
+                url = `https://${location.TextContent}.raw.ic0.app/${index}.${mime.getExtension(contentType) || 'bin'}`;
                 break;
             case 3:
                 url = location.TextContent;
