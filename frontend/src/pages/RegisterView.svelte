@@ -20,13 +20,20 @@
         validCanister = undefined;
     }
     async function register() {
-        await nftAgent.register(canister, index);
+        const collection = await nftAgent.fetchAllOwnedNfts();
+        collection.forEach(nft => {
+            if (Number(nft.index) === index) {
+                alert(" NFT by that index is already registered, but will continue anyway.");
+            }
+        })
+        const result = await nftAgent.register(canister, index);
+        if (result) alert(result);
         window.location.href = '/';
     }
-    console.log('canSubmit is', canSubmit);
 </script>
 
 <div class="register-view">
+    <h4 class="pb-3">Register a new NFT</h4>
     {#await nftAgent.isAuthorized() then isAuthorized}
     {#if isAuthorized}
     <form on:submit|preventDefault={register}>
@@ -66,5 +73,8 @@
     form {
         border-radius: 15px;
         border: solid 3px white;
+    }
+    h4 {
+        text-align: center;
     }
 </style>

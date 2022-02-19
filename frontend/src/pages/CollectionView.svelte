@@ -8,7 +8,7 @@
 </script>
 
 {#await _collection then collection}
-<div>
+<div class="collection">
     <h2><img src={collection.icon} alt="{collection.name} icon" class="icon"><Copier text={canister}>{collection.name} ({collection.symbol})</Copier></h2>
     {#await _nfts then nfts}
     <NFTGrid {nfts}/>
