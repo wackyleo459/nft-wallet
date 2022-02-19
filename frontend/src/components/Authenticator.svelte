@@ -21,14 +21,14 @@
   }
 </script>
 
-<div>
+<div class="authenticator">
     {#await _isAuthenticated then isAuthenticated}
         {#if isAuthenticated}
             {#await _isAuthorized then isAuthorized}
             {#if isAuthorized}
             <button on:click={_logout}>Log out</button>
             {:else}
-            <p class="info">Unregistered user - 
+            <p class="info">Unregistered user -
                 {#await getCommand()}
                 <s>copy registration command &cross;</s>
                 {:then command}

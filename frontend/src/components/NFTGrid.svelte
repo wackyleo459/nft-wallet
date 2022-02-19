@@ -18,6 +18,7 @@
         list-style: none;
         display: flex;
         flex-flow: row wrap;
+        justify-content: center;
     }
     .box {
         width: 12em;
