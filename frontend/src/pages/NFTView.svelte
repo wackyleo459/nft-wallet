@@ -11,8 +11,11 @@
     $:locationType = locationTypes[current];
 </script>
 
-<div>
-    <h2>{nft.symbol} #{nft.index}</h2>
+<div class="NFT_view">
+    <h3><span class="badge bg-warning text-dark">NFT</span></h3>
+    <h2>
+        {nft.symbol} #{nft.index}
+    </h2>
     <Carousel content={nft.content} bind:current --fallback-bg="gray">
         <svelte:fragment slot="fallback" let:contentType let:src>
             {@const extension = mime.getExtension(contentType)}
@@ -64,4 +67,11 @@
     a:visited { text-decoration: none; }
     a:hover { text-decoration: none; }
     a:active { text-decoration: none; }
+    .NFT_view {
+
+    }
+    h2 {
+        font-family: 'Noto Sans', sans-serif;
+        font-family: 'Roboto Mono', monospace;
+    }
 </style>
