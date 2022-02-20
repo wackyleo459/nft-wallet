@@ -5,7 +5,7 @@
     export let nfts;
 </script>
 <div class="collection">
-    Collection
+    <h5>Collection</h5>
     <ul class="container">
         {#each nfts as nft}
             <li class="box">

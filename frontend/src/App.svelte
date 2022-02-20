@@ -6,8 +6,10 @@
     import TransferView from './pages/TransferView.svelte';
     import Authenticator from './components/Authenticator.svelte';
     import RegisterView from './pages/RegisterView.svelte';
-
+    import * as nftAgent from './nft';
     export let page = {};
+    let walletCID;
+
 </script>
 
 <main class="main">
@@ -23,7 +25,11 @@
         <button type="button" id="register_button" class="btn">
             <a href="/register">Register</a>
         </button>
-
+        <!-- {#await check then canisterId} -->
+            <button type="button" id="collection_button" class="btn">
+                <a href="/">Collection</a>
+            </button>
+        <!-- {/await} -->
     </div>
 
     <div class="content">
@@ -73,6 +79,9 @@
     #register_button {
         border: solid 1px #893385;
     }
+    #collection_button {
+        border: solid 1px #fcc56f;
+    }
     .content {
         display: flex;
         flex-direction: column;
@@ -80,15 +89,19 @@
         align-items: center;
     }
     img {
-        position: fixed;
+        position: relative;
+        top: 100px;
         left: 50%;
-        bottom: 20px;
         transform: translate(-50%, -50%);
-        margin: 0 auto;
+        padding-bottom: 1.5em;
     }
     button {
         flex-grow: 1;
         margin: 5px;
     }
-
+    .btn a {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
 </style>

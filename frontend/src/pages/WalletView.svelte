@@ -24,4 +24,10 @@
         flex-direction: column;
         align-items: center;
     }
+    .button {
+        height: 3em;
+        align-items: center;
+        display: flex;
+        margin: 2em;
+    }
 </style>

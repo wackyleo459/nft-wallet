@@ -186,7 +186,7 @@ export async function isAuthorized() {
   return walletCanister && (await walletCanister.is_authorized());
 }
 
-async function getWalletCanister() {
+export async function getWalletCanister() {
   if (walletCanister) {
     return walletCanister;
   }
