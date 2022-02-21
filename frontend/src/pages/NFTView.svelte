@@ -33,7 +33,7 @@
     <p class="canister"><Copier always text={nft.canister}>{nft.canister}</Copier></p>
     {#await isAuthorized() then isAuthorized}
     {#if isAuthorized}
-    <a class="btn" href="/{nft.canister}/{nft.index}/transfer">Transfer</a>
+    <a class="transfer_button" href="/{nft.canister}/{nft.index}/transfer">Transfer</a>
     {/if}
     {/await}
 </div>
@@ -56,10 +56,14 @@
         position: relative;
         margin: auto;
     }
-    .btn {
+    .transfer_button {
         border: solid 2px #5f2684;
+        margin: 5px;
+        padding: 6px 8px;
+        border-radius: 5px;
+        text-align: center;
     }
-    .btn:hover {
+    .transfer_button:hover {
         background-color: #5f2684;
         color: white;
     }

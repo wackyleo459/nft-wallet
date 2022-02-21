@@ -17,7 +17,7 @@
         margin: 0 0 8px;
     }
     div {
-        display: flex;
-        justify-content: center;
+        position: relative;
+        left: 25%;
     }
 </style>
