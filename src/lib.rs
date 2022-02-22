@@ -3,14 +3,20 @@ extern crate ic_cdk_macros;
 #[macro_use]
 extern crate serde;
 
-use std::collections::{HashSet, BTreeSet};
+use std::collections::{BTreeSet, HashSet};
+use std::mem;
 
-use ic_cdk::{export::candid, storage, api::{self, call::{self, RejectionCode}}};
-use candid::{Principal, CandidType};
+use candid::{CandidType, Principal};
+use ic_cdk::{
+    api::{
+        self,
+        call::{self, RejectionCode},
+    },
+    storage,
+};
 use once_cell::sync::Lazy;
-use parking_lot::{RwLock, MappedRwLockReadGuard, RwLockReadGuard};
+use parking_lot::{MappedRwLockReadGuard, RwLock, RwLockReadGuard};
 
-mod http;
 mod wrap;
 
 use wrap::Wrapper;
@@ -18,19 +24,29 @@ use wrap::Wrapper;
 #[init]
 fn init(custodians: Option<HashSet<Principal>>) {
     STORAGE.write().custodians = custodians.unwrap_or_else(|| HashSet::from([api::caller()]));
-    http::bake_hashes();
+    ic_certified_assets::init();
+}
+
+#[derive(CandidType, Deserialize)]
+struct StableState {
+    assets: ic_certified_assets::StableState,
+    wallet: Storage,
 }
 
 #[pre_upgrade]
 fn pre_upgrade() {
-    storage::stable_save((&*STORAGE.read(),)).unwrap();
+    let state = StableState {
+        assets: ic_certified_assets::pre_upgrade(),
+        wallet: mem::take(&mut *STORAGE.write()),
+    };
+    storage::stable_save((state,)).unwrap();
 }
 
 #[post_upgrade]
 fn post_upgrade() {
-    let (s,): (Storage,) = storage::stable_restore().unwrap();
-    *STORAGE.write() = s;
-    http::bake_hashes();
+    let (s,): (StableState,) = storage::stable_restore().unwrap();
+    *STORAGE.write() = s.wallet;
+    ic_certified_assets::post_upgrade(s.assets);
 }
 
 #[derive(CandidType, Deserialize, Ord, PartialOrd, Eq, PartialEq, Clone, Copy)]
@@ -43,9 +59,7 @@ struct Nft {
 enum Error {
     InvalidCanister,
     CannotNotify,
-    CanisterError {
-        message: String,
-    },
+    CanisterError { message: String },
     NoSuchToken,
     NotOwner,
     Unauthorized,
@@ -56,7 +70,9 @@ impl From<DipError> for Error {
         match e {
             DipError::InvalidTokenId => Self::NoSuchToken,
             DipError::Unauthorized => Self::NotOwner,
-            _ => Self::CanisterError { message: format!("{e:?}") },
+            _ => Self::CanisterError {
+                message: format!("{e:?}"),
+            },
         }
     }
 }
@@ -74,7 +90,9 @@ impl From<(RejectionCode, String)> for Error {
 
 #[inspect_message]
 fn inspect_message() {
-    if is_authorized() || !["set_authorized", "transfer", "register"].contains(&call::method_name().as_str()) {
+    if is_authorized()
+        || !["set_authorized", "transfer", "register"].contains(&call::method_name().as_str())
+    {
         call::accept_message();
     }
 }
@@ -113,7 +131,10 @@ async fn register(nft: Nft) -> Result {
     if STORAGE.read().owned_nfts.contains(&nft) {
         return Ok(());
     }
-    if let Ok((owner,)) = call::call::<_, (Result<Principal, DipError>,)>(nft.canister, "ownerOfDip721", (nft.index,)).await {
+    if let Ok((owner,)) =
+        call::call::<_, (Result<Principal, DipError>,)>(nft.canister, "ownerOfDip721", (nft.index,))
+            .await
+    {
         if !matches!(owner, Ok(p) if p == api::id()) {
             return Err(Error::NotOwner);
         }
@@ -129,7 +150,9 @@ async fn burn(nft: Nft) -> Result {
     if !is_authorized() {
         return Err(Error::Unauthorized);
     }
-    call::call::<_, (Result<u128, DipError>,)>(nft.canister, "burnDip721", (nft.index,)).await?.0?;
+    call::call::<_, (Result<u128, DipError>,)>(nft.canister, "burnDip721", (nft.index,))
+        .await?
+        .0?;
     Ok(())
 }
 
@@ -147,17 +170,35 @@ async fn transfer(nft: Nft, target: Principal, notify: Option<bool>) -> Result {
         register(nft).await?;
     }
     if notify != Some(false) {
-        if let Ok((res,)) = call::call::<_, (Result<u128, DipError>,)>(nft.canister, "safeTransferFromNotifyDip721", (api::id(), target, nft.index, Vec::<u8>::new())).await {
+        if let Ok((res,)) = call::call::<_, (Result<u128, DipError>,)>(
+            nft.canister,
+            "safeTransferFromNotifyDip721",
+            (api::id(), target, nft.index, Vec::<u8>::new()),
+        )
+        .await
+        {
             res?;
         } else {
             if notify == None {
-                call::call::<_, (Result<u128, DipError>,)>(nft.canister, "safeTransferFromDip721", (api::id(), target, nft.index)).await?.0?;
+                call::call::<_, (Result<u128, DipError>,)>(
+                    nft.canister,
+                    "safeTransferFromDip721",
+                    (api::id(), target, nft.index),
+                )
+                .await?
+                .0?;
             } else {
                 return Err(Error::CannotNotify);
             }
         }
     } else {
-        call::call::<_, (Result<u128, DipError>,)>(nft.canister, "safeTransferFromDip721", (api::id(), target, nft.index)).await?.0?;
+        call::call::<_, (Result<u128, DipError>,)>(
+            nft.canister,
+            "safeTransferFromDip721",
+            (api::id(), target, nft.index),
+        )
+        .await?
+        .0?;
     }
     STORAGE.write().owned_nfts.remove(&nft);
     Ok(())
@@ -165,7 +206,10 @@ async fn transfer(nft: Nft, target: Principal, notify: Option<bool>) -> Result {
 
 #[update(name = "onDIP721Received")]
 fn on_dip721_received(_: Principal, _: Principal, tokenid: u64, _: Vec<u8>) {
-    STORAGE.write().owned_nfts.insert(Nft { canister: api::caller(), index: tokenid });
+    STORAGE.write().owned_nfts.insert(Nft {
+        canister: api::caller(),
+        index: tokenid,
+    });
 }
 
 #[derive(CandidType, Deserialize, Default)]
