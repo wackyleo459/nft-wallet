@@ -137,13 +137,15 @@ select {
   display: flex;
   justify-content: center;
 }
-.content {
-  height: 55%;
-}
 .button {
   font-size: 16px;
   /* height: 2em; */
   display: flex;
   align-items: center;
   box-sizing: border-box;
+}
+.section {
+  font-size: 1.4em;
+  font-family: "Noto Sans", sans-serif;
+  padding: 10px 0;
 }

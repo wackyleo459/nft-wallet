@@ -43,14 +43,16 @@
         display: flex;
         justify-items: center;
         flex-direction: column;
-        width: 40%;
+        width: 330px;
         max-height: 80vh;
     }
     p {
         font-size: 20px;
+        text-align: center;
     }
     .canister {
-        font-size: 12px;
+        font-size: 1em;
+        text-align: center;
     }
     .button {
         position: relative;
@@ -62,6 +64,7 @@
         padding: 6px 8px;
         border-radius: 5px;
         text-align: center;
+        margin: 15px 0;
     }
     .transfer_button:hover {
         background-color: #5f2684;

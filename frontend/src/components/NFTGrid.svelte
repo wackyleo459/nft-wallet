@@ -5,14 +5,15 @@
     export let nfts;
 </script>
 <div class="collection">
-    <h5>Collection</h5>
-    <ul class="container">
+    <div class="section">Collection</div>
+    <hr style="color: rgb(123, 117, 117)">
+    <div class="container">
         {#each nfts as nft}
             <li class="box">
                 <NFTBox {nft}/>
             </li>
         {/each}
-    </ul>
+    </div>
 </div>
 
 <style>
@@ -20,9 +21,17 @@
         list-style: none;
         display: flex;
         flex-flow: row wrap;
+        margin: 1em;
     }
     .box {
         width: 12em;
-        padding: 10px 10px 10px 10px;
+        padding: 1em;
+    }
+    .collection {
+        width: inherit;
+    }
+    li.box:hover {
+        margin-top: 3px;
+        border-radius: 10px;
     }
 </style>

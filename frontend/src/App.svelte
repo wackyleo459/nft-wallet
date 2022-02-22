@@ -9,29 +9,29 @@
     import * as nftAgent from './nft';
     export let page = {};
     let walletCID;
-
 </script>
 
 <main class="main">
 
-    <h1>
-        <a href="/" class="ui">NFT Wallet</a>
-    </h1>
-    <CanisterId/>
-
-    <Authenticator/>
-    <div class="navButtons">
-        <button type="button" id="home_button" class="nav_button button">
-            <a class="nav_b" href="/">Home</a>
-        </button>
-        <button type="button" id="register_button" class="nav_button button">
-            <a class="nav_b" href="/register">Register</a>
-        </button>
-        <!-- {#await check then canisterId} -->
-            <button type="button" id="collection_button" class="nav_button button">
-                <a class="nav_b" href="/">Collection</a>
+    <div class="navBar">
+        <div id="header">
+            <a href="/" class="ui">NFT Wallet</a>
+        </div>
+        <div style="display: flex; height: 2em; align-items: center">
+            <button type="button" id="home_button" class="nav_button button">
+                <a class="nav_b" href="/">Home</a>
             </button>
-        <!-- {/await} -->
+            <button type="button" id="register_button" class="nav_button button">
+                <a class="nav_b" href="/register">Register</a>
+            </button>
+            <!-- <button type="button" id="collection_button" class="nav_button button">
+                <a class="nav_b" href="/collection">Collection</a>
+            </button> -->
+        </div>
+    </div>
+    <div id="NFT_wallet">
+        <CanisterId style="margin-bottom: 5px"/>
+        <Authenticator/>
     </div>
 
     <div class="content">
@@ -60,31 +60,26 @@
     .main {
         height: 100vh;
     }
-    div {
-        margin-bottom: 40px;
-        margin-top: 20px;
-    }
-    h1 {
-        text-align: center;
-        line-height: 2.5;
+    #header {
+        display: flex;
+        justify-content: baseline;
+        font-size: 36px;
         margin-bottom: 0;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     }
-    .navButtons {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-    }
+
     #home_button {
         border: solid 1px #30ace3;
     }
     #register_button {
-        border: solid 1.8px #893385;
+        border: solid 1px #893385;
     }
     #collection_button {
         border: solid 1px #fcc56f;
     }
     .content {
+        margin-top: 3em;
+        height: 70vh;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -98,8 +93,8 @@
         padding-bottom: 1.5em;
     }
     button {
-        flex-grow: 1;
-        margin: 5px;
+        /* flex-grow: 1; */
+        margin: 0 5px;
     }
     .nav_button a {
         display: block;
@@ -110,9 +105,25 @@
         border-radius: 4px;
         background-color: transparent;
     }
+
     a.nav_b {
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+    .navBar {
+        display: flex;
+        justify-content: space-between;
+        margin: 1.3em;
+    }
+    #NFT_wallet {
+        display: flex;
+        flex-direction: column;
+        align-items: baseline;
+        margin: 0 1.3em;
+        justify-content: space-between;
+    }
+    button {
+        width: 100px;
     }
 </style>

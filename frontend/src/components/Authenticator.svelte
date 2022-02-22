@@ -45,11 +45,11 @@
                     (is the replica running?)
                     {/if}
                 </span>
-                <button on:click={_logout}>Log out</button>
+                <button on:click={_logout}>Logout</button>
             </p>
             {/await}
         {:else}
-        <button on:click={login}>Log in with Internet Identity</button>
+        <button on:click={login}>Login</button>
         {/if}
     {:catch}
     <p class="error">Could not reach Internet Identity <button on:click={retry}>Retry &circlearrowright;</button></p>
@@ -71,7 +71,6 @@
     }
     .authenticator {
         display:flex;
-        align-items: center;
         flex-direction: column;
     }
 </style>

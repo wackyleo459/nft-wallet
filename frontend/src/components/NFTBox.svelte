@@ -39,5 +39,7 @@
     }
     h4 {
         font-weight: 200;
+        font-family: 'Noto Sans', sans-serif;
+        font-family: 'Roboto Mono', monospace;
     }
 </style>
