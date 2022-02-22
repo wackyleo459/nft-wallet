@@ -8,4 +8,4 @@ npm install
 II_ENV=development dfx deploy --no-wallet --argument null
 popd
 npm install
-dfx deploy --no-wallet --argument null
+./deploy.sh --no-wallet --argument null
