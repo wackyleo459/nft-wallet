@@ -12,7 +12,7 @@
 </script>
 
 <div class="NFT_view">
-    <h3><span class="badge bg-warning text-dark">NFT</span></h3>
+    <div class="badge">NFT</div>
     <h2>
         {nft.symbol} #{nft.index}
     </h2>
@@ -71,11 +71,23 @@
     a:visited { text-decoration: none; }
     a:hover { text-decoration: none; }
     a:active { text-decoration: none; }
-    .NFT_view {
 
-    }
     h2 {
         font-family: 'Noto Sans', sans-serif;
         font-family: 'Roboto Mono', monospace;
+    }
+    .badge {
+        font-size: 18px;
+        width: 2em;
+        display: inline-block;
+        padding: 0.35em 0.65em;
+        font-weight: 700;
+        color: #212529;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: 0.25rem;
+        background-color: #ffc107;
+        display: inline-block;
     }
 </style>

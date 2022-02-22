@@ -6,7 +6,7 @@
     let canisterId = getCanisterId();
 </script>
 
-<div>
+<div id="wallet_cid">
     <p>Wallet canister id: <Copier text={canisterId} --default-color="#666" --highlight-color="#EEE">{canisterId}</Copier></p>
 </div>
 
@@ -16,8 +16,8 @@
         font-size: 14px;
         margin: 0 0 8px;
     }
-    div {
-        position: relative;
-        left: 25%;
+    #wallet_cid{
+        display: flex;
+        justify-content: center;
     }
 </style>

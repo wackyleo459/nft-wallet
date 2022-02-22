@@ -45,26 +45,29 @@
 </script>
 
 <div>
-    <h2>Transfer {nft.name} ({nft.symbol}) #{nft.index}</h2>
     {#await _isAuthorized then isAuthorized}
-        {#if isAuthorized}
-        <form on:submit|preventDefault={transfer} class="my-5">
-            <label class="form-label pt-1" for="principal">Principal to transfer to:</label>
-            <input class="form-control" type="text" id="principal" bind:value={principal}>
-            <br>
+    {#if isAuthorized}
+        <form on:submit|preventDefault={transfer} class="form">
+            <h2>Transfer {nft.name} ({nft.symbol}) #{nft.index}</h2>
+            <label for="principal">Principal to transfer to:</label>
+            <input type="text" id="principal" bind:value={principal}>
+
             <label id="label_notify" for="notify">Notify the recipient?</label>
             <select id="notify" bind:value={notify}>
                 <option value="no">No</option>
                 <option value="maybe" selected>Yes, but transfer anyway if unsupported</option>
                 <option value="yes">Yes, and don't transfer without it</option>
             </select>
-            <br>
+
             <div class="agreement">
                 <input type="checkbox" id="confirm" bind:checked={confirmed}>
-                <label for="confirm">I understand that if this principal is wrong, I'm probably not getting this NFT back</label>
+                <label for="confirm">I understand that if this principal is wrong, I'm probably not getting this NFT back.</label>
             </div>
-            <button type="submit" class ="btn btn-primary {!canSubmit ? "disabled": null}">Transfer
-            </button>
+            <div class="div_button_primary">
+                <button type="submit" class ="button_primary {!canSubmit ? "disabled": null}">
+                    Transfer
+                </button>
+            </div>
             {#if errorMessage}
             <p class="error">{errorMessage}</p>
             {/if}
@@ -78,12 +81,16 @@
 </div>
 
 <style>
+    h2 {
+        text-align: center;
+        padding-bottom: 1em;
+    }
     form {
-        max-width: 400px;
-        border-radius: 15px;
-        border: solid 2.5px white;
-        padding: 1rem;
-
+        max-width: 500px;
+        margin: 2.5em;
+    }
+    input {
+        width: 100%;
     }
     .agreement {
         padding: 1.5em 0;
@@ -93,8 +100,26 @@
     }
     .agreement label {
         max-width: 90%;
+        font-size: 14px;
+    }
+    label {
+        margin-right: 1em;
+        margin-bottom: 0.5em;
+    }
+    #principal {
+        margin-bottom: 1em;
+        margin-top: 0.5em;
+    }
+    #confirm {
+        width: fit-content;
+        margin-right: 15px;
+        background-color: #282829;
     }
     #label_notify {
-        margin-right: 1em;
+        margin-top: 1em;
+    }
+    #notify {
+        height: 30px;
+        padding: 0 5px;
     }
 </style>

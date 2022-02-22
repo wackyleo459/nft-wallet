@@ -34,8 +34,8 @@
                 {:then command}
                 <Copier always text={command} --default-color="#999">copy registration command</Copier>
                 {/await}
-                (or <button on:click={_logout}>Log out</button>)
             </p>
+            <button on:click={_logout}>Log out</button>
             {/if}
             {:catch}
             <p>
@@ -71,6 +71,7 @@
     }
     .authenticator {
         display:flex;
-        justify-content: center;
+        align-items: center;
+        flex-direction: column;
     }
 </style>

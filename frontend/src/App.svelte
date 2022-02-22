@@ -13,21 +13,23 @@
 </script>
 
 <main class="main">
-    <a href="/" class="ui">
-        <h1>NFT Wallet</h1>
-        <CanisterId/>
-    </a>
+
+    <h1>
+        <a href="/" class="ui">NFT Wallet</a>
+    </h1>
+    <CanisterId/>
+
     <Authenticator/>
     <div class="navButtons">
-        <button type="button" id="home_button" class="btn">
-            <a href="/">Home</a>
+        <button type="button" id="home_button" class="nav_button button">
+            <a class="nav_b" href="/">Home</a>
         </button>
-        <button type="button" id="register_button" class="btn">
-            <a href="/register">Register</a>
+        <button type="button" id="register_button" class="nav_button button">
+            <a class="nav_b" href="/register">Register</a>
         </button>
         <!-- {#await check then canisterId} -->
-            <button type="button" id="collection_button" class="btn">
-                <a href="/">Collection</a>
+            <button type="button" id="collection_button" class="nav_button button">
+                <a class="nav_b" href="/">Collection</a>
             </button>
         <!-- {/await} -->
     </div>
@@ -77,7 +79,7 @@
         border: solid 1px #30ace3;
     }
     #register_button {
-        border: solid 1px #893385;
+        border: solid 1.8px #893385;
     }
     #collection_button {
         border: solid 1px #fcc56f;
@@ -99,9 +101,18 @@
         flex-grow: 1;
         margin: 5px;
     }
-    .btn a {
+    .nav_button a {
         display: block;
         width: 100%;
         height: 100%;
+    }
+    .nav_button {
+        border-radius: 4px;
+        background-color: transparent;
+    }
+    a.nav_b {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 </style>
