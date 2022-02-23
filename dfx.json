@@ -1,5 +1,6 @@
 {
   "version": 1,
+  "dfx": "0.8.4",
   "canisters": {
     "nftwallet": {
       "type": "custom",
@@ -7,6 +8,5 @@
       "candid": "nftwallet.did",
       "build": "./build.sh"
     }
-  },
-  "dfx": "0.8.4"
+  }
 }
