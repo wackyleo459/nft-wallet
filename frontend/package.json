@@ -25,9 +25,9 @@
     "@dfinity/agent": "^0.10.2",
     "@dfinity/auth-client": "^0.10.2",
     "js-base64": "^3.7.2",
+    "mime": "^3.0.0",
     "multiformats": "^9.6.2",
     "page": "^1.11.6",
-    "sirv-cli": "^1.0.0",
-    "mime": "^3.0.0"
+    "sirv-cli": "^1.0.0"
   }
 }

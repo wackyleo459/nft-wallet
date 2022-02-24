@@ -119,7 +119,9 @@ export default {
           preventAssignment: false,
           "process.env.DFX_NETWORK": JSON.stringify(network),
           "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV),
-          "process.env.INTERNET_IDENTITY_CANISTER_ID": JSON.stringify(process.env.INTERNET_IDENTITY_CANISTER_ID),
+          "process.env.INTERNET_IDENTITY_CANISTER_ID": JSON.stringify(
+            process.env.INTERNET_IDENTITY_CANISTER_ID
+          ),
         },
         ...Object.keys(canisterIds)
           .filter((canisterName) => canisterName !== "__Candid_UI")
@@ -154,5 +156,5 @@ export default {
     if (!/@dfinity|sha256/.test(warning)) {
       warn(warning);
     }
-  }
+  },
 };

@@ -14,19 +14,21 @@
 <main class="main">
 
     <div class="navBar">
-        <div id="header">
-            <a href="/" class="ui">NFT Wallet</a>
+        <div id="title" style="grid-area: title">
+            <img id="wallet" style="grid-area: icon" src="/images/wallet.png" alt="wallet"/>
+            <a href="/" id="nft_wallet_title"class="ui">NFT Wallet</a>
         </div>
-        <div style="display: flex; height: 2em; align-items: center">
+
+        <div class="buttons">
             <button type="button" id="home_button" class="nav_button button">
                 <a class="nav_b" href="/">Home</a>
             </button>
             <button type="button" id="register_button" class="nav_button button">
                 <a class="nav_b" href="/register">Register</a>
             </button>
-            <!-- <button type="button" id="collection_button" class="nav_button button">
-                <a class="nav_b" href="/collection">Collection</a>
-            </button> -->
+            <button type="button" id="collection_button" class="nav_button button">
+                <a class="nav_b" href="/collection">About</a>
+            </button>
         </div>
     </div>
     <div id="NFT_wallet">
@@ -47,27 +49,68 @@
         <WalletView/>
         {/if}
     </div>
-    <img src="/images/ic-badge-powered-by_bg-dark.svg" alt="powered by ic">
+    <img id="ic" src="/images/ic-badge-powered-by_bg-dark.svg" alt="powered by ic">
 </main>
 
 <style>
+
     @media (min-width: 640px) {
         main {
             max-width: 90%;
             margin: 0 auto;
         }
+        .navBar {
+            display: grid;
+            grid-template-columns: 1fr 45%;
+            grid-template-areas:
+                "title buttons";;
+            margin: 1.3em;
+        }
+        .buttons {
+            justify-content: flex-end;
+        }
     }
     .main {
         height: 100vh;
     }
-    #header {
+    #title {
         display: flex;
-        justify-content: baseline;
-        font-size: 36px;
+        align-items: center;
         margin-bottom: 0;
+        font-size:xx-large;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     }
 
+    @media (max-width: 425px) {
+        #title {
+            justify-content: center;
+        }
+        .navBar {
+            margin: 1em;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .buttons {
+            justify-content: center;
+            display: flex;
+            margin-top: 1.5em;
+        }
+    }
+    img#wallet {
+        object-fit: contain;
+        max-height: 60px;
+        height: 100%;
+        margin-right: 10px;
+    }
+    a#nft_wallet_title {
+        font-size-adjust:inherit;
+    }
+    .buttons {
+        grid-area: buttons;
+        display: flex;
+        align-items: center;
+    }
     #home_button {
         border: solid 1px #30ace3;
     }
@@ -85,7 +128,7 @@
         justify-content: space-between;
         align-items: center;
     }
-    img {
+    img#ic {
         position: relative;
         top: 100px;
         left: 50%;
@@ -111,11 +154,7 @@
         align-items: center;
         justify-content: center;
     }
-    .navBar {
-        display: flex;
-        justify-content: space-between;
-        margin: 1.3em;
-    }
+
     #NFT_wallet {
         display: flex;
         flex-direction: column;
