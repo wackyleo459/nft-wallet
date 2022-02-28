@@ -7,89 +7,21 @@ import css from "rollup-plugin-css-only";
 import replace from "@rollup/plugin-replace";
 import inject from "rollup-plugin-inject";
 import json from "@rollup/plugin-json";
+import html from "@rollup/plugin-html";
+import { initCanisterIds, serve } from "./util";
 
-const production = !process.env.ROLLUP_WATCH;
-
-const path = require("path");
-
-function initCanisterIds() {
-  let localCanisters, localIiCanister, prodCanisters, canisters;
-  try {
-    localCanisters = require(path.resolve(
-      "..",
-      ".dfx",
-      "local",
-      "canister_ids.json"
-    ));
-  } catch (error) {
-    console.log("No local canister_ids.json found. Continuing production");
-  }
-  try {
-    localIiCanister = require(path.resolve(
-      "..",
-      "internet-identity",
-      ".dfx",
-      "local",
-      "canister_ids.json"
-    ));
-  } catch (error) {
-    console.log(
-      "No local internet-identity canister_ids.json found. Continuing production"
-    );
-  }
-  try {
-    prodCanisters = require(path.resolve("..", "canister_ids.json"));
-  } catch (error) {
-    console.log("No production canister_ids.json found. Continuing with local");
-  }
-
-  const network =
-    process.env.DFX_NETWORK ||
-    (process.env.NODE_ENV === "production" ? "ic" : "local");
-
-  console.log(network);
-
-  const canisterIds =
-    network === "local"
-      ? { ...(localCanisters || {}), ...(localIiCanister || {}) }
-      : prodCanisters;
-
-  return { canisterIds, network };
-}
 const { canisterIds, network } = initCanisterIds();
 
-function serve() {
-  let server;
-
-  function toExit() {
-    if (server) server.kill(0);
-  }
-
-  return {
-    writeBundle() {
-      if (server) return;
-      server = require("child_process").spawn(
-        "npm",
-        ["run", "start", "--", "--dev"],
-        {
-          stdio: ["ignore", "inherit", "inherit"],
-          shell: true,
-        }
-      );
-
-      process.on("SIGTERM", toExit);
-      process.on("exit", toExit);
-    },
-  };
-}
+const production = !process.env.ROLLUP_WATCH;
+const isNetworkLocal = network === "local";
 
 export default {
   input: "src/main.js",
   output: {
     sourcemap: true,
-    format: "iife",
     name: "app",
     file: "public/build/bundle.js",
+    format: "iife",
   },
   plugins: [
     svelte({
@@ -150,6 +82,7 @@ export default {
     production && terser(),
   ],
   watch: {
+    include: ".public/build/**",
     clearScreen: false,
   },
   onwarn: (warning, warn) => {

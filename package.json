@@ -17,6 +17,10 @@
     "copy:types": "rsync -avr .dfx/$(echo ${DFX_NETWORK:-'**'})/canisters/** --exclude='assets/' --exclude='idl/' --exclude='*.wasm' --delete frontend/src/declarations"
   },
   "devDependencies": {
-    "@rollup/plugin-html": "^0.2.4"
+    "@rollup/plugin-html": "^0.2.4",
+    "@rollup/plugin-replace": "^4.0.0"
+  },
+  "dependencies": {
+    "smelte": "^1.1.2"
   }
 }

@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "rollup -c",
+    "build": "npm run build:html &&rollup -c",
+    "build:html": "node ./scripts/buildIndexHtml.js",
     "dev": "rollup -c -w",
     "start": "sirv public --no-clear -s"
   },
