@@ -8,6 +8,10 @@
     import RegisterView from './pages/RegisterView.svelte';
     import * as nftAgent from './nft';
     export let page = {};
+    const loadSpinner = () => {
+        console.log('clicked');
+        document.getElementById("loader").style.visibility = 'visible';
+    };
     let walletCID;
 </script>
 
@@ -26,11 +30,14 @@
             <button type="button" id="register_button" class="nav_button button">
                 <a class="nav_b" href="/register">Register</a>
             </button>
-            <button type="button" id="collection_button" class="nav_button button">
-                <a class="nav_b" href="/collection">About</a>
+            <button type="button" id="collection_button" on:click={loadSpinner} class="nav_button button">
+                <a class="nav_b" href="/">About</a>
             </button>
         </div>
     </div>
+
+
+    <div class="lds-roller" id="loader"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
     <div id="NFT_wallet">
         <CanisterId style="margin-bottom: 5px"/>
         <Authenticator/>
@@ -50,6 +57,7 @@
         {/if}
     </div>
     <img id="ic" src="/images/ic-badge-powered-by_bg-dark.svg" alt="powered by ic">
+
 </main>
 
 <style>
@@ -81,7 +89,7 @@
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     }
 
-    @media (max-width: 425px) {
+    @media (max-width: 639px) {
         #title {
             justify-content: center;
         }
@@ -165,4 +173,5 @@
     button {
         width: 100px;
     }
+
 </style>

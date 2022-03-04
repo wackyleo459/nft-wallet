@@ -261,8 +261,12 @@ export async function register(canister, index) {
     index,
   });
   if ("Err" in res) {
-    return "Failed to register. The NFT by that index may not exist. Or your NFT Wallet is not the owner yet, in which case you have to transfer ownership to the wallet canister.";
+    return "Failed to register. \n\nThe NFT by that index may not exist, or your NFT Wallet is not the owner. Ensure that the wallet canister owns the NFT.";
     throw res.Err;
+  }
+  // return res;
+  if ("Ok" in res) {
+    return "Successfully registered.";
   }
 }
 

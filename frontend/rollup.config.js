@@ -82,7 +82,7 @@ export default {
     production && terser(),
   ],
   watch: {
-    include: ".public/build/**",
+    include: "src/**",
     clearScreen: false,
   },
   onwarn: (warning, warn) => {

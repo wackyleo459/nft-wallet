@@ -3,6 +3,8 @@
     import { Principal } from '@dfinity/principal';
     let canister;
     let index;
+    let showButton = false;
+    let message;
     $:canSubmit = validPrincipal(canister) && !isNaN(index);
     let validCanister;
     function validPrincipal(principal) {
@@ -23,16 +25,36 @@
         const collection = await nftAgent.fetchAllOwnedNfts();
         collection.forEach(nft => {
             if (Number(nft.index) === index) {
-                alert(" NFT by that index is already registered, but will continue anyway.");
+                showButton = false;
+                message = "NFT by that index is already registered, \nbut will continue anyway...";
+                showSnackbar();
             }
         })
         const result = await nftAgent.register(canister, index);
-        if (result) alert(result);
-        window.location.href = '/';
+        if (result) {
+            message = result;
+            showButton = true;
+            showSnackbar();
+        };
+
+        // window.location.href = '/';
+    }
+    function showSnackbar() {
+        document.getElementById("snackbar").className = "show";
+    }
+
+    function hideSnackbar() {
+        const element = document.getElementById("snackbar");
+        element.className = "";
     }
 </script>
 
 <div class="register-view">
+    <div id="snackbar">{message}
+        {#if showButton}
+        <button id="snack_button" on:click={hideSnackbar}>Okay</button>
+        {/if}
+    </div>
     {#await nftAgent.isAuthorized() then isAuthorized}
     {#if isAuthorized}
     <form class="form" on:submit|preventDefault={register}>
@@ -92,5 +114,18 @@
     }
     .index {
         margin-right: 15px;
+    }
+    #snack_button {
+        border-radius: 4px;
+        background-color: transparent;
+        margin-top: 10px;
+        background-color: #fcc56f;
+        width: auto;
+        border: solid 2px #fcc56f;
+        color: black;
+        width: 40%;
+        /* padding: 7px 100px; */
+        /* margin-top: 12px;
+        margin-bottom: 5px; */
     }
 </style>
