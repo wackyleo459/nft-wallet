@@ -1,10 +1,12 @@
 <script>
     import * as nftAgent from '../nft';
     import { Principal } from '@dfinity/principal';
+    import Loader, {loadSpinner, hideSpinner} from '../components/Loader.svelte';
     let canister;
     let index;
     let showButton = false;
     let message;
+    let loading = true;
     $:canSubmit = validPrincipal(canister) && !isNaN(index);
     let validCanister;
     function validPrincipal(principal) {
@@ -22,22 +24,23 @@
         validCanister = undefined;
     }
     async function register() {
+        loadSpinner();
         const collection = await nftAgent.fetchAllOwnedNfts();
         collection.forEach(nft => {
             if (Number(nft.index) === index) {
+                hideSpinner();
                 showButton = false;
                 message = "NFT by that index is already registered, \nbut will continue anyway...";
                 showSnackbar();
             }
         })
         const result = await nftAgent.register(canister, index);
+        hideSpinner();
         if (result) {
             message = result;
             showButton = true;
             showSnackbar();
         };
-
-        // window.location.href = '/';
     }
     function showSnackbar() {
         document.getElementById("snackbar").className = "show";
@@ -46,10 +49,12 @@
     function hideSnackbar() {
         const element = document.getElementById("snackbar");
         element.className = "";
+        window.location.href = '/';
     }
 </script>
 
 <div class="register-view">
+    <Loader/>
     <div id="snackbar">{message}
         {#if showButton}
         <button id="snack_button" on:click={hideSnackbar}>Okay</button>

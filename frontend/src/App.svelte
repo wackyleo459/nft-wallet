@@ -6,12 +6,11 @@
     import TransferView from './pages/TransferView.svelte';
     import Authenticator from './components/Authenticator.svelte';
     import RegisterView from './pages/RegisterView.svelte';
+    import loadSpinner from './components/Loader.svelte';
+    import Loader from './components/Loader.svelte';
     import * as nftAgent from './nft';
     export let page = {};
-    const loadSpinner = () => {
-        console.log('clicked');
-        document.getElementById("loader").style.visibility = 'visible';
-    };
+
     let walletCID;
 </script>
 
@@ -30,14 +29,14 @@
             <button type="button" id="register_button" class="nav_button button">
                 <a class="nav_b" href="/register">Register</a>
             </button>
-            <button type="button" id="collection_button" on:click={loadSpinner} class="nav_button button">
+            <button type="button" id="collection_button"  on:click={loadSpinner} class="nav_button button">
                 <a class="nav_b" href="/">About</a>
             </button>
         </div>
     </div>
 
 
-    <div class="lds-roller" id="loader"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+    <!-- <Loader/> -->
     <div id="NFT_wallet">
         <CanisterId style="margin-bottom: 5px"/>
         <Authenticator/>
@@ -130,7 +129,7 @@
     }
     .content {
         margin-top: 3em;
-        height: 70vh;
+        /* height: 70vh; */
         display: flex;
         flex-direction: column;
         justify-content: space-between;
