@@ -24,18 +24,18 @@
         validCanister = undefined;
     }
     async function register() {
-        loadSpinner();
+        loadSpinner("registerLoader");
         const collection = await nftAgent.fetchAllOwnedNfts();
         collection.forEach(nft => {
             if (Number(nft.index) === index) {
-                hideSpinner();
+                hideSpinner("registerLoader");
                 showButton = false;
                 message = "NFT by that index is already registered, \nbut will continue anyway...";
                 showSnackbar();
             }
         });
         const result = await nftAgent.register(canister, index);
-        hideSpinner();
+        hideSpinner("registerLoader");
         if (result) {
             result.status === "fail" ? nextPage = false : nextPage = true;
             message = result.message;
@@ -57,7 +57,7 @@
 </script>
 
 <div class="register-view">
-    <Loader/>
+    <Loader named="registerLoader"/>
     <div id="snackbar">{message}
         {#if showButton}
         <button id="snack_button" on:click={hideSnackbar}>Okay</button>

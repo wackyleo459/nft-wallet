@@ -6,16 +6,15 @@
     import TransferView from './pages/TransferView.svelte';
     import Authenticator from './components/Authenticator.svelte';
     import RegisterView from './pages/RegisterView.svelte';
-    import loadSpinner from './components/Loader.svelte';
-    import Loader from './components/Loader.svelte';
+    import Loader, {loadSpinner} from './components/Loader.svelte';
     import * as nftAgent from './nft';
     export let page = {};
+    let named = "mainLoader";
 
-    let walletCID;
 </script>
 
 <main class="main">
-
+    <Loader named={named}/>
     <div class="navBar">
         <div id="title" style="grid-area: title">
             <img id="wallet" style="grid-area: icon" src="/images/wallet.png" alt="wallet"/>
@@ -29,8 +28,8 @@
             <button type="button" id="register_button" class="nav_button button">
                 <a class="nav_b" href="/register">Register</a>
             </button>
-            <button type="button" id="collection_button"  on:click={loadSpinner} class="nav_button button">
-                <a class="nav_b" href="/">About</a>
+            <button type="button" id="collection_button" class="nav_button button" on:click|preventDefault={()=>loadSpinner(named)}>About
+                <!-- <a class="nav_b" href="/">About</a> -->
             </button>
         </div>
     </div>
@@ -38,7 +37,7 @@
 
     <!-- <Loader/> -->
     <div id="NFT_wallet">
-        <CanisterId style="margin-bottom: 5px"/>
+        <CanisterId/>
         <Authenticator/>
     </div>
 

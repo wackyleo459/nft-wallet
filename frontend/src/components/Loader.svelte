@@ -1,13 +1,16 @@
+<script>
+  export let named = "default"
+</script>
 <script context="module">
-  export function loadSpinner() {
-        document.getElementById("loader").style.visibility = 'visible';
+  export function loadSpinner(elementId) {
+        document.getElementById(elementId).style.visibility = 'visible';
     };
-  export function hideSpinner() {
-        document.getElementById("loader").style.visibility = 'hidden';
+  export function hideSpinner(elementId) {
+        document.getElementById(elementId).style.visibility = 'hidden';
   }
 </script>
 
-<div class="lds-roller" id="loader">
+<div class="lds-roller" id={named}>
   <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
 </div>
 

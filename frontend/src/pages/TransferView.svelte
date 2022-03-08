@@ -1,11 +1,27 @@
 <script>
-    import { Principal } from '@dfinity/principal'
+    import { Principal } from '@dfinity/principal';
     import * as nftAgent from '../nft';
     export let nft;
+    import Loader, {loadSpinner, hideSpinner} from '../components/Loader.svelte';
+    let loaderId = "transferLoader";
+    let message;
+    let nextPage = true;
     let principal;
     let notify = 'maybe';
     let confirmed = false;
     $:canSubmit = confirmed && validData({principal, notify});
+
+    function showSnackbar() {
+        document.getElementById("snackbar").className = "show";
+    }
+    function hideSnackbar() {
+        const element = document.getElementById("snackbar");
+        element.className = "";
+        if (nextPage) {
+            window.location.href = '/';
+        }
+    }
+
     function transfer() {
         if (!validData({principal, notify})) {
             return;
@@ -22,8 +38,18 @@
                 shouldNotify = null;
                 break;
         }
-        nftAgent.transfer(nft, principal, shouldNotify).then(() => {
-            window.location.href = '/';
+        loadSpinner(loaderId);
+        nftAgent.transfer(nft, principal, shouldNotify).then((result) => {
+            hideSpinner(loaderId)
+            if ("Err" in result) {
+                console.error(JSON.stringify(result.Err))
+                message = result.Err;
+                nextPage = false;
+            }
+            if ("Ok" in result) {
+                message = "Successfully transferred."
+            }
+            showSnackbar();
         });
     }
     let errorMessage;
@@ -44,9 +70,13 @@
     let _isAuthorized = nftAgent.isAuthorized();
 </script>
 
-<div>
+<div id="transferView">
+    <Loader named={loaderId}/>
     {#await _isAuthorized then isAuthorized}
     {#if isAuthorized}
+        <div id="snackbar">{message}
+            <button id="snack_button" on:click={hideSnackbar}>Okay</button>
+        </div>
         <form on:submit|preventDefault={transfer} class="form">
             <h2>Transfer {nft.name} ({nft.symbol}) #{nft.index}</h2>
             <label for="principal">Principal to transfer to:</label>
@@ -121,5 +151,10 @@
     #notify {
         height: 30px;
         padding: 0 5px;
+    }
+    #transferView {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 </style>

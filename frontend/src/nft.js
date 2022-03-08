@@ -247,11 +247,12 @@ export async function transfer(nft, to, notify) {
     canister: Principal.fromText(nft.canister),
     index: nft.index,
   };
-  await walletCanister.transfer(
+  const result = await walletCanister.transfer(
     walletNft,
     Principal.fromText(to),
     notify == null ? [] : [!!notify]
   );
+  return result;
 }
 
 export async function register(canister, index) {
