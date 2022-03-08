@@ -6,7 +6,7 @@
     let index;
     let showButton = false;
     let message;
-    let loading = true;
+    let nextPage = true;
     $:canSubmit = validPrincipal(canister) && !isNaN(index);
     let validCanister;
     function validPrincipal(principal) {
@@ -33,11 +33,12 @@
                 message = "NFT by that index is already registered, \nbut will continue anyway...";
                 showSnackbar();
             }
-        })
+        });
         const result = await nftAgent.register(canister, index);
         hideSpinner();
         if (result) {
-            message = result;
+            result.status === "fail" ? nextPage = false : nextPage = true;
+            message = result.message;
             showButton = true;
             showSnackbar();
         };
@@ -49,7 +50,9 @@
     function hideSnackbar() {
         const element = document.getElementById("snackbar");
         element.className = "";
-        window.location.href = '/';
+        if (nextPage) {
+            window.location.href = '/';
+        }
     }
 </script>
 

@@ -260,14 +260,22 @@ export async function register(canister, index) {
     canister: Principal.fromText(canister),
     index,
   });
+  const response = {
+    status: null,
+    message: "",
+  };
+
   if ("Err" in res) {
-    return "Failed to register. \n\nThe NFT by that index may not exist, or your NFT Wallet is not the owner. Ensure that the wallet canister owns the NFT.";
-    throw res.Err;
+    console.error(JSON.stringify(res.Err));
+    response.status = "fail";
+    response.message =
+      "Failed to register. \n\nThe NFT by that index may not exist, or your NFT Wallet is not the owner. Ensure that the wallet canister owns the NFT.";
   }
-  // return res;
   if ("Ok" in res) {
-    return "Successfully registered.";
+    response.status = "success";
+    response.message = "Successfully registered.";
   }
+  return response;
 }
 
 let objectUrls = [];
