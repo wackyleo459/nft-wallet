@@ -7,7 +7,8 @@
     let showButton = false;
     let message;
     let nextPage = true;
-    $:canSubmit = validPrincipal(canister) && !isNaN(index);
+    $:canSubmit = validPrincipal(canister) && typeof index === 'number';
+
     let validCanister;
     function validPrincipal(principal) {
         try {
@@ -24,6 +25,7 @@
         validCanister = undefined;
     }
     async function register() {
+        if (!canSubmit) {return}
         loadSpinner("registerLoader");
         const collection = await nftAgent.fetchAllOwnedNfts();
         collection.forEach(nft => {
@@ -83,9 +85,12 @@
             <div id="nft_index_help" class="form_text">
                 Provide the specific token id associated with the NFT you are registering.
             </div>
+            {#if typeof index !== 'number'}
+            <span class="error">Missing index</span>
+            {/if}
             <br>
             <div class="div_button_primary">
-                <button type="submit" class ="button_primary {!canSubmit ? "disabled": null}" >
+                <button type="submit" class ="button_primary">
                     Register
                 </button>
             </div>
