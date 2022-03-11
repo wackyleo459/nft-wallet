@@ -3,6 +3,8 @@
     import * as nftAgent from '../nft';
     export let nft;
     import Loader, {loadSpinner, hideSpinner} from '../components/Loader.svelte';
+    import { addTransaction } from '../transactionHistory.js';
+
     let loaderId = "transferLoader";
     let message;
     let nextPage = true;
@@ -48,6 +50,7 @@
             }
             if ("Ok" in result) {
                 message = "Successfully transferred."
+                addTransaction(nft.index, `Transferred NFT to ${principal}`);
             }
             showSnackbar();
         });

@@ -2,6 +2,9 @@
     import * as nftAgent from '../nft';
     import { Principal } from '@dfinity/principal';
     import Loader, {loadSpinner, hideSpinner} from '../components/Loader.svelte';
+    import { addTransaction } from '../transactionHistory.js';
+    import page from "page";
+
     let canister;
     let index;
     let showButton = false;
@@ -40,6 +43,9 @@
         hideSpinner("registerLoader");
         if (result) {
             result.status === "fail" ? nextPage = false : nextPage = true;
+            if (result.status === "success") {
+                addTransaction(index, `Registered NFT from canister ${canister}`);
+            }
             message = result.message;
             showButton = true;
             showSnackbar();
@@ -48,12 +54,15 @@
     function showSnackbar() {
         document.getElementById("snackbar").className = "show";
     }
-
     function hideSnackbar() {
         const element = document.getElementById("snackbar");
         element.className = "";
         if (nextPage) {
-            window.location.href = '/';
+            // window.location.href = '/';
+            page("/", () => {
+                app.$set({ page: {} });
+                }
+            );
         }
     }
 </script>

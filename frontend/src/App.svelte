@@ -7,10 +7,15 @@
     import Authenticator from './components/Authenticator.svelte';
     import RegisterView from './pages/RegisterView.svelte';
     import Loader, {loadSpinner} from './components/Loader.svelte';
-    import * as nftAgent from './nft';
+    import Transactions from './components/Transactions.svelte';
+    import {transactionHistory} from './transactionHistory.js';
     export let page = {};
     let named = "mainLoader";
 
+    function viewTransactions() {
+        app.$set({ page: { transactions: true } })
+    }
+    setInterval(() => console.log('transactions array',$transactionHistory), 3000);
 </script>
 
 <main class="main">
@@ -28,8 +33,7 @@
             <button type="button" id="register_button" class="nav_button button">
                 <a class="nav_b" href="/register">Register</a>
             </button>
-            <button type="button" id="collection_button" class="nav_button button" on:click|preventDefault={()=>loadSpinner(named)}>About
-                <!-- <a class="nav_b" href="/">About</a> -->
+            <button type="button" id="collection_button" class="nav_button button" on:click={viewTransactions}>Transactions
             </button>
         </div>
     </div>
@@ -50,6 +54,8 @@
         <TransferView nft={page.transfer}/>
         {:else if page.collection}
         <CollectionView canister={page.collection}/>
+        {:else if page.transactions}
+        <Transactions/>
         {:else}
         <WalletView/>
         {/if}
