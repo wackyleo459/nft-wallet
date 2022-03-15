@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
     import WalletView from './pages/WalletView.svelte';
     import NFTView from './pages/NFTView.svelte';
     import CollectionView from './pages/CollectionView.svelte';
@@ -15,12 +15,22 @@
     function viewTransactions() {
         app.$set({ page: { transactions: true } })
     }
-    setInterval(() => console.log('transactions array',$transactionHistory), 3000);
-</script>
+    import { Menu, Menuitem } from 'svelte-mui/src';
 
-<main class="main">
-    <Loader named={named}/>
-    <div class="navBar">
+    // setInterval(() => console.log('transactions array',$transactionHistory), 3000);
+    import { getCanisterId } from './nft';
+    let canisterId = getCanisterId();
+
+    import {
+        Theme,
+        RadioButtonGroup,
+        RadioButton,
+        } from "carbon-components-svelte";
+
+    let theme = "g90";
+</script>
+<!-- <Theme bind:theme/> -->
+<div class="navBar">
         <div id="title" style="grid-area: title">
             <img id="wallet" style="grid-area: icon" src="/images/wallet.png" alt="wallet"/>
             <a href="/" id="nft_wallet_title"class="ui">NFT Wallet</a>
@@ -33,13 +43,27 @@
             <button type="button" id="register_button" class="nav_button button">
                 <a class="nav_b" href="/register">Register</a>
             </button>
-            <button type="button" id="collection_button" class="nav_button button" on:click={viewTransactions}>Transactions
-            </button>
+            <Menu class="menu" origin="top right" dy=38 duration=150 width=3 style="background-color: grey">
+                <div slot="activator">
+                    <button type="button" id="collection_button" class="nav_button button">
+                        Account
+                    </button>
+                </div>
+
+                <Menuitem><a class="nav_b" href="/">Login</a></Menuitem>
+                <Menuitem><a class="nav_b" href="/">Logout</a></Menuitem>
+                <Menuitem on:click={viewTransactions}>Transactions</Menuitem>
+                <hr />
+                <div id="cid">Wallet Canister ID</div>
+                <Menuitem id="cid_menu">
+                    {canisterId}
+                </Menuitem>
+            </Menu>
+
         </div>
     </div>
-
-
-    <!-- <Loader/> -->
+<main class="main">
+    <Loader named={named}/>
     <div id="NFT_wallet">
         <CanisterId/>
         <Authenticator/>
@@ -64,19 +88,19 @@
 
 </main>
 
-<style>
-
-    @media (min-width: 640px) {
-        main {
-            max-width: 90%;
-            margin: 0 auto;
+<style lang="scss" global>
+    .navBar {
+        border-bottom: solid 1px #7f7f7f;
+        padding: 1em;
+    }
+    main {
+            margin: 0 15px auto;
         }
+    @media (min-width: 640px) {
         .navBar {
             display: grid;
             grid-template-columns: 1fr 45%;
-            grid-template-areas:
-                "title buttons";;
-            margin: 1.3em;
+            grid-template-areas: "title buttons";
         }
         .buttons {
             justify-content: flex-end;
@@ -98,7 +122,6 @@
             justify-content: center;
         }
         .navBar {
-            margin: 1em;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -112,7 +135,7 @@
     img#wallet {
         object-fit: contain;
         max-height: 60px;
-        height: 100%;
+        height: 1em;
         margin-right: 10px;
     }
     a#nft_wallet_title {
@@ -176,6 +199,14 @@
     }
     button {
         width: 100px;
+    }
+
+    #cid {
+        margin: 0 15px;
+    }
+    #cid_menu {
+        display: flex;
+        flex-direction: column;
     }
 
 </style>

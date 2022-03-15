@@ -7,8 +7,8 @@ import css from "rollup-plugin-css-only";
 import replace from "@rollup/plugin-replace";
 import inject from "rollup-plugin-inject";
 import json from "@rollup/plugin-json";
-import html from "@rollup/plugin-html";
-import sveltePreprocess from "sveltePreprocess";
+// import html from "@rollup/plugin-html";
+import sveltePreprocess from "svelte-preprocess";
 import typescript from "@rollup/plugin-typescript";
 import { initCanisterIds, serve } from "./util";
 
@@ -27,7 +27,6 @@ export default {
   },
   plugins: [
     svelte({
-      preprocess: sveltePreprocess(),
       compilerOptions: {
         // enable run-time checks when not in production
         dev: !production,

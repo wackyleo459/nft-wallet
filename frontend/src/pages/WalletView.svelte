@@ -13,7 +13,7 @@
         </div>
         {/if}
         {#if isAuthorized}
-        <a class="button" href="/register">Register a new NFT</a>
+
         {#await fetchAllOwnedNfts() then nfts}
 
         <NFTGrid {nfts}/>
