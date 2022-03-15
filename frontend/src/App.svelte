@@ -56,7 +56,7 @@
                 <hr />
                 <div id="cid">Wallet Canister ID</div>
                 <Menuitem id="cid_menu">
-                    {canisterId}
+                    <CanisterId/>
                 </Menuitem>
             </Menu>
 
@@ -65,7 +65,6 @@
 <main class="main">
     <Loader named={named}/>
     <div id="NFT_wallet">
-        <CanisterId/>
         <Authenticator/>
     </div>
 

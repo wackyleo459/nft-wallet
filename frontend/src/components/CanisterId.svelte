@@ -7,17 +7,20 @@
 </script>
 
 <div id="wallet_cid">
-    <p>Wallet canister id: <Copier text={canisterId} --default-color="#666" --highlight-color="#EEE">{canisterId}</Copier></p>
+    <Copier text={canisterId} --default-color="#666" --highlight-color="#EEE">{canisterId}</Copier>
 </div>
 
 <style>
-    p {
+    /* p {
         color: #666;
         font-size: 14px;
         margin: 0 0 8px;
-    }
+    } */
     #wallet_cid{
         display: flex;
         justify-content: center;
+        color: #666;
+        font-size: 14px;
+        margin: 0 0 8px;
     }
 </style>

@@ -3,13 +3,14 @@
     import { fetchAllOwnedNfts, isAuthorized } from '../nft.js';
     import Authenticator from '../components/Authenticator.svelte';
 </script>
-<ul class="list-group">
+<div class="wallet-view">
     {#await isAuthorized() then isAuthorized}
     {#if !isAuthorized}
         <div class="jumbotron">
-            The wallet can hold countless NFTs, all in a single secure wallet! Start adding your NFTs here.
-
-            Once in your wallet, you can view, send, receive NFTs, and more. Please login first.
+            <h2>
+                Welcome to the nft wallet for the IC
+            </h2>
+            The wallet can hold countless NFTs, all in a single secure wallet! Start adding your NFTs here. Once in your wallet, you can view, send, receive NFTs, and more. Please login first.
         </div>
         {/if}
         {#if isAuthorized}
@@ -20,26 +21,21 @@
         {/await}
     {/if}
     {/await}
-</ul>
+</div>
 
 <style>
-    .list-group {
+    .wallet-view {
         width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
     }
     .jumbotron {
         border: 2px solid #6d2482;
-        margin: 2em 5em;
-        line-height: 2rem;
-        padding: 3em 4em;
+        background-color: #4f1c5e;
+        line-height: 1.5rem;
+        padding: 3em;
         display: flex;
         flex-direction: column;
-        align-items: center;
         border-radius: 15px;
-        font-size: large;
-        max-width: 500px;
+        font-size: 14px;
     }
     .button {
         height: 3em;
