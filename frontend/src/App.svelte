@@ -4,22 +4,24 @@
     import CollectionView from './pages/CollectionView.svelte';
     import CanisterId from './components/CanisterId.svelte';
     import TransferView from './pages/TransferView.svelte';
-    import Authenticator from './components/Authenticator.svelte';
+    import Authenticator, {_logout, login} from './components/Authenticator.svelte';
     import RegisterView from './pages/RegisterView.svelte';
     import Loader, {loadSpinner} from './components/Loader.svelte';
     import Transactions from './components/Transactions.svelte';
     import {transactionHistory} from './transactionHistory.js';
     export let page = {};
+    import app from './main.js';
+    import { Menu, Menuitem } from 'svelte-mui/src';
+    import { getCanisterId } from './nft';
+
+    let canisterId = getCanisterId();
+
     let named = "mainLoader";
 
     function viewTransactions() {
         app.$set({ page: { transactions: true } })
     }
-    import { Menu, Menuitem } from 'svelte-mui/src';
-
     // setInterval(() => console.log('transactions array',$transactionHistory), 3000);
-    import { getCanisterId } from './nft';
-    let canisterId = getCanisterId();
 
     import {
         Theme,
@@ -43,15 +45,15 @@
             <button type="button" id="register_button" class="nav_button button">
                 <a class="nav_b" href="/register">Register</a>
             </button>
-            <Menu class="menu" origin="top right" dy=38 duration=150 width=3 style="background-color: grey">
+            <Menu class="menu" origin="top right" dy=38 duration=150 width=3>
                 <div slot="activator">
                     <button type="button" id="collection_button" class="nav_button button">
                         Account
                     </button>
                 </div>
 
-                <Menuitem><a class="nav_b" href="/">Login</a></Menuitem>
-                <Menuitem><a class="nav_b" href="/">Logout</a></Menuitem>
+                <Menuitem on:click={login}>Login</Menuitem>
+                <Menuitem on:click={_logout}>Logout</Menuitem>
                 <Menuitem on:click={viewTransactions}>Transactions</Menuitem>
                 <hr />
                 <div id="cid">Wallet Canister ID</div>
@@ -63,6 +65,7 @@
         </div>
     </div>
 <main class="main">
+
     <Loader named={named}/>
     <div id="NFT_wallet">
         <Authenticator/>
@@ -88,12 +91,16 @@
 </main>
 
 <style lang="scss" global>
+
     .navBar {
-        border-bottom: solid 1px #7f7f7f;
+        border-bottom: solid 3px #7f7f7f;
         padding: 1em;
     }
     main {
             margin: 0 15px auto;
+            height: 92vh;
+            display: grid;
+            grid-template-rows: 1fr auto
         }
     @media (min-width: 640px) {
         .navBar {
@@ -105,8 +112,9 @@
             justify-content: flex-end;
         }
     }
-    .main {
-        height: 100vh;
+    .content {
+        grid-row-start: 1;
+        grid-row-end: 2;
     }
     #title {
         display: flex;
@@ -153,6 +161,7 @@
     }
     #collection_button {
         border: solid 1px #fcc56f;
+        color: white;
     }
     .content {
         margin-top: 3em;
@@ -163,11 +172,9 @@
         align-items: center;
     }
     img#ic {
-        position: relative;
-        top: 100px;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        padding-bottom: 1.5em;
+        grid-row-start: 2;
+        grid-row-end: 3;
+        margin: auto;
     }
     button {
         /* flex-grow: 1; */
@@ -188,7 +195,6 @@
         align-items: center;
         justify-content: center;
     }
-
     #NFT_wallet {
         display: flex;
         flex-direction: column;

@@ -1,24 +1,28 @@
 <script>
   import * as nftAgent from '../nft';
   import Copier from './Copier.svelte';
-  let _isAuthenticated = nftAgent.isAuthenticated();
-  let _isAuthorized = nftAgent.isAuthorized();
-  async function getCommand() {
-      const principal = await nftAgent.getPrincipal();
-      return `dfx canister --no-wallet${nftAgent.isMainnet() ? ' --network ic' : ''} call '${nftAgent.getCanisterId()}' set_authorized '(principal "${principal}", true)'`;
-  }
-  function retry() {
-      _isAuthenticated = nftAgent.isAuthenticated();
-  }
-  function login() {
-      nftAgent.authenticate(() => {
-          _isAuthenticated = nftAgent.isAuthenticated();
-      });
-  }
-  async function _logout() {
-      await nftAgent.logout();
-      _isAuthenticated = nftAgent.isAuthenticated();
-  }
+</script>
+<script context="module">
+    let _isAuthenticated = nftAgent.isAuthenticated();
+    let _isAuthorized = nftAgent.isAuthorized();
+    async function getCommand() {
+        const principal = await nftAgent.getPrincipal();
+        return `dfx canister --no-wallet${nftAgent.isMainnet() ? ' --network ic' : ''} call '${nftAgent.getCanisterId()}' set_authorized '(principal "${principal}", true)'`;
+    }
+    function retry() {
+        _isAuthenticated = nftAgent.isAuthenticated();
+    }
+    export function login() {
+        nftAgent.authenticate(() => {
+            _isAuthenticated = nftAgent.isAuthenticated();
+            window.location.href = '/'
+        });
+    }
+    export async function _logout() {
+        await nftAgent.logout();
+        _isAuthenticated = nftAgent.isAuthenticated();
+        window.location.href = '/'
+    }
 </script>
 
 <div class="authenticator">

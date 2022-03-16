@@ -51,7 +51,7 @@ a.button:hover {
   margin-inline-end: 0.5ch;
 }
 
-button,
+/* button,
 .button:not(.ui),
 input[type="submit"] {
   border-image: conic-gradient(
@@ -71,7 +71,7 @@ input[type="submit"] {
   color: white;
   display: flex;
   justify-content: center;
-}
+} */
 
 button:disabled,
 .button:not(.ui):disabled,

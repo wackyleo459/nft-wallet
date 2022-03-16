@@ -9,14 +9,17 @@
     <hr style="color: rgb(123, 117, 117)">
     <div class="container">
         {#each nfts as nft}
+        <div class="mdc-elevation--z4 flexy-boy">
             <li class="box">
                 <NFTBox {nft}/>
             </li>
+        </div>
         {/each}
     </div>
 </div>
 
 <style>
+    @import "@material/elevation/mdc-elevation";
     .container {
         list-style: none;
         display: flex;
