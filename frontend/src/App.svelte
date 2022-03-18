@@ -4,7 +4,7 @@
     import CollectionView from './pages/CollectionView.svelte';
     import CanisterId from './components/CanisterId.svelte';
     import TransferView from './pages/TransferView.svelte';
-    import Authenticator, {_logout, login} from './components/Authenticator.svelte';
+    import Authenticator, {_logout, login, isLoggedIn} from './components/Authenticator.svelte';
     import RegisterView from './pages/RegisterView.svelte';
     import Loader, {loadSpinner} from './components/Loader.svelte';
     import Transactions from './components/Transactions.svelte';
@@ -51,9 +51,11 @@
                         Account
                     </button>
                 </div>
-
+                {#if !isLoggedIn}
                 <Menuitem on:click={login}>Login</Menuitem>
+                {:else}
                 <Menuitem on:click={_logout}>Logout</Menuitem>
+                {/if}
                 <Menuitem on:click={viewTransactions}>Transactions</Menuitem>
                 <hr />
                 <div id="cid">Wallet Canister ID</div>

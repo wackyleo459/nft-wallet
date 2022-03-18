@@ -12,6 +12,7 @@
     function retry() {
         _isAuthenticated = nftAgent.isAuthenticated();
     }
+    export let isLoggedIn = false;
     export function login() {
         nftAgent.authenticate(() => {
             _isAuthenticated = nftAgent.isAuthenticated();
@@ -30,6 +31,7 @@
         {#if isAuthenticated}
             {#await _isAuthorized then isAuthorized}
             {#if isAuthorized}
+            {isLoggedIn = true}
             <button on:click={_logout}>Log out</button>
             {:else}
             <p class="info">Unregistered user -
@@ -53,6 +55,7 @@
             </p>
             {/await}
         {:else}
+        {isLoggedIn = false}
         <button on:click={login}>Login</button>
         {/if}
     {:catch}
