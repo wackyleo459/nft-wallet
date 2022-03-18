@@ -15,6 +15,9 @@ page("/", () => {
 page("/register", () => {
   app.$set({ page: { register: true } });
 });
+page("/transactions", () => {
+  app.$set({ page: { transactions: true } });
+});
 page("/:canister/:index", fetchNftRouter("canister", "index"), (context) => {
   const params = { nft: context.state.nft };
   const fragmentIndex = context.canonicalPath.indexOf("#");

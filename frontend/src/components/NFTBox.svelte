@@ -3,26 +3,28 @@
 <script>
     import Copier from './Copier.svelte';
     import ContentBox from './ContentBox.svelte';
-
+    import Paper, { Title, Subtitle, Content } from '@smui/paper';
     export let nft;
 </script>
 
-<div class="card">
+<Paper elevation=4 color="grey">
     <a class="ui" href="/{nft.canister}/{nft.index}">
         <div class="preview">
             <ContentBox src={nft.preview?.value} contentType={nft.preview?.contentType}/>
         </div>
     </a>
-    <div class="desc">
-        <a class="ui" href="/{nft.canister}/{nft.index}"><h4>{nft.symbol} #{nft.index}</h4></a>
-        <p>
+    <div class="card">
+        <a class="ui" href="/{nft.canister}/{nft.index}">
+            <Title>{nft.symbol} #{nft.index}</Title>
+        </a>
+        <Content>
             <a class="ui" href="/{nft.canister}">
                 <img class="icon" src={nft.icon} alt="icon">{nft.name}
             </a>
-            <Copier text={nft.canister}/>
-        </p>
+                <Copier text={nft.canister}/>
+        </Content>
     </div>
-</div>
+</Paper>
 
 <style>
     .preview {
@@ -30,14 +32,10 @@
         background: white;
     }
     .card {
+        padding: 7px;
         transition: 0.3s;
         border-radius: 5px;
-        background: slategray;
-    }
-    .desc {
-        padding: 2px 16px;
-    }
-    h4 {
+        background-color: #bdbfca;
         font-weight: 200;
         font-family: 'Noto Sans', sans-serif;
         font-family: 'Roboto Mono', monospace;

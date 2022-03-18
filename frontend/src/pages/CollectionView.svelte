@@ -2,6 +2,7 @@
     import NFTGrid from '../components/NFTGrid.svelte';
     import Copier from '../components/Copier.svelte';
     import { fetchAllOwnedNftsForCollection, fetchCollectionInfo } from '../nft.js';
+
     export let canister;
     $:_nfts = fetchAllOwnedNftsForCollection(canister);
     $:_collection = fetchCollectionInfo(canister);

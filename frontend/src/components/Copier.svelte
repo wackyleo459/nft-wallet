@@ -13,7 +13,7 @@
     <div class="slot"><slot/></div>
     {/if}
     <svg class="icon" xmlns="http://www.w3.org/2000/svg" width="152" height="213" viewBox="0 0 152 213" >
-        <g>
+        <g color="silver">
             <rect stroke-width="15" id="svg_1" height="161" width="100" y="7" x="7" stroke="var(--stroke-color)" fill="none"/>
             <rect id="svg_10" height="161" width="100" y="45" x="45" stroke-width="15" stroke="var(--stroke-color)" fill="none"/>
         </g>

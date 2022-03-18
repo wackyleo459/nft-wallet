@@ -4,7 +4,9 @@
     export let nft;
     import Loader, {loadSpinner, hideSpinner} from '../components/Loader.svelte';
     import { addTransaction } from '../transactionHistory.js';
+    import page from 'page';
 
+    export let pageState;
     let loaderId = "transferLoader";
     let message;
     let nextPage = true;
@@ -20,8 +22,12 @@
         const element = document.getElementById("snackbar");
         element.className = "";
         if (nextPage) {
-            window.location.href = '/';
+            // window.location.href = '/';
+            pageState.transactions = true;
+            pageState = pageState;
+            page('/transactions')
         }
+
     }
 
     function transfer() {

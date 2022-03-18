@@ -1,7 +1,8 @@
 <script>
     import NFTGrid from '../components/NFTGrid.svelte';
     import { fetchAllOwnedNfts, isAuthorized } from '../nft.js';
-    import Authenticator from '../components/Authenticator.svelte';
+    import {loadSpinner, hideSpinner} from '../components/Loader.svelte';
+
 </script>
 <div class="wallet-view">
     {#await isAuthorized() then isAuthorized}
@@ -12,12 +13,15 @@
             </h2>
             The wallet can hold countless NFTs, all in a single secure wallet! Start adding your NFTs here. Once in your wallet, you can view, send, receive NFTs, and more. Please login first.
         </div>
-        {/if}
-        {#if isAuthorized}
-
+    {/if}
+    {#if isAuthorized}
         {#await fetchAllOwnedNfts() then nfts}
-
-        <NFTGrid {nfts}/>
+            <!-- {#if !nfts }
+                {loadSpinner("mainLoader")}
+            {:else}
+            {hideSpinner("mainLoader")} -->
+            <NFTGrid {nfts}/>
+            <!-- {/if} -->
         {/await}
     {/if}
     {/await}

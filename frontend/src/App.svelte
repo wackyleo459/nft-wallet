@@ -10,7 +10,7 @@
     import Transactions from './components/Transactions.svelte';
     import {transactionHistory} from './transactionHistory.js';
     export let page = {};
-    import app from './main.js';
+
     import { Menu, Menuitem } from 'svelte-mui/src';
     import { getCanisterId } from './nft';
 
@@ -18,11 +18,17 @@
 
     let named = "mainLoader";
 
-    function viewTransactions() {
-        app.$set({ page: { transactions: true } })
-    }
+    // function viewTransactions() {
+    //     app.$set({ page: { transactions: true } })
+    // }
     // setInterval(() => console.log('transactions array',$transactionHistory), 3000);
+    function echo() {
 
+        console.log('state', page);
+        setTimeout(()=> {
+            console.log('4s state', page);
+        }, 4000)
+    }
     import {
         Theme,
         RadioButtonGroup,
@@ -42,7 +48,7 @@
             <button type="button" id="home_button" class="nav_button button">
                 <a class="nav_b" href="/">Home</a>
             </button>
-            <button type="button" id="register_button" class="nav_button button">
+            <button type="button" id="register_button" class="nav_button button" on:click={echo}>
                 <a class="nav_b" href="/register">Register</a>
             </button>
             <Menu class="menu" origin="top right" dy=38 duration=150 width=3>
@@ -56,7 +62,8 @@
                 {:else}
                 <Menuitem on:click={_logout}>Logout</Menuitem>
                 {/if}
-                <Menuitem on:click={viewTransactions}>Transactions</Menuitem>
+                <Menuitem>
+                    <a href="/transactions">Transactions</a></Menuitem>
                 <hr />
                 <div id="cid">Wallet Canister ID</div>
                 <Menuitem id="cid_menu">
@@ -69,9 +76,9 @@
 <main class="main">
 
     <Loader named={named}/>
-    <div id="NFT_wallet">
+    <!-- <div id="NFT_wallet">
         <Authenticator/>
-    </div>
+    </div> -->
 
     <div class="content">
         {#if page.nft}
@@ -79,11 +86,11 @@
         {:else if page.register}
         <RegisterView/>
         {:else if page.transfer}
-        <TransferView nft={page.transfer}/>
+        <TransferView nft={page.transfer} pageState={page}/>
         {:else if page.collection}
         <CollectionView canister={page.collection}/>
         {:else if page.transactions}
-        <Transactions/>
+        <Transactions />
         {:else}
         <WalletView/>
         {/if}
@@ -97,6 +104,7 @@
     .navBar {
         border-bottom: solid 3px #7f7f7f;
         padding: 1em;
+        background-color: grey;
     }
     main {
             margin: 0 15px auto;
@@ -164,6 +172,8 @@
     #collection_button {
         border: solid 1px #fcc56f;
         color: white;
+        display: flex;
+        justify-content: center;
     }
     .content {
         margin-top: 3em;

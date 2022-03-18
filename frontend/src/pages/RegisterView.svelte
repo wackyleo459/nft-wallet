@@ -59,10 +59,7 @@
         element.className = "";
         if (nextPage) {
             // window.location.href = '/';
-            page("/", () => {
-                app.$set({ page: {} });
-                }
-            );
+            page("/");
         }
     }
 </script>

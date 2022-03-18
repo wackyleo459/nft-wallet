@@ -4,6 +4,12 @@
     import LocationTypeIcon from '../components/LocationTypeIcon.svelte';
     import mime from 'mime/lite';
     import { isAuthorized } from '../nft';
+    import Card, {
+        Content,
+        PrimaryAction,
+        Media,
+        MediaContent,
+    } from '@smui/card';
     export let nft;
     export let current;
     $:current = current || 0;
@@ -12,30 +18,39 @@
 </script>
 
 <div class="NFT_view">
-    <div class="badge">NFT</div>
-    <h2>
-        {nft.symbol} #{nft.index}
-    </h2>
-    <Carousel content={nft.content} bind:current --fallback-bg="gray">
-        <svelte:fragment slot="fallback" let:contentType let:src>
-            {@const extension = mime.getExtension(contentType)}
-            {@const filename = extension ? `${nft.symbol}_${current}.${extension}` : `${nft.symbol}_${current}`}
-            <a class="button" href={src} download={filename}>Download {extension.toUpperCase() || 'file'}</a>
-        </svelte:fragment>
-    </Carousel>
-    <p>
-        <img src={nft.icon} alt="{nft.name} NFT icon" class="icon">
-        {nft.name}
-        {#if locationType}
-        <a href={nft.location}><LocationTypeIcon {locationType}/></a>
+    <Card>
+        <div class="badge">NFT</div>
+        <h2>
+            {nft.symbol} #{nft.index}
+        </h2>
+        <Media class="card-media-16x9">
+            <MediaContent>
+            <Carousel content={nft.content} bind:current --fallback-bg="gray">
+                <svelte:fragment slot="fallback" let:contentType let:src>
+                    {@const extension = mime.getExtension(contentType)}
+                    {@const filename = extension ? `${nft.symbol}_${current}.${extension}` : `${nft.symbol}_${current}`}
+                    <a class="button" href={src} download={filename}>Download {extension.toUpperCase() || 'file'}</a>
+                </svelte:fragment>
+            </Carousel>
+            </MediaContent>
+        </Media>
+    </Card>
+    <Card>
+        <p>
+            <img src={nft.icon} alt="{nft.name} NFT icon" class="icon">
+            {nft.name}
+            {#if locationType}
+            <a href={nft.location}><LocationTypeIcon {locationType}/></a>
+            {/if}
+        </p>
+        <p class="canister"><Copier always text={nft.canister}>{nft.canister}</Copier></p>
+        {#await isAuthorized() then isAuthorized}
+        {#if isAuthorized}
+        <a class="transfer_button" href="/{nft.canister}/{nft.index}/transfer">Transfer</a>
         {/if}
-    </p>
-    <p class="canister"><Copier always text={nft.canister}>{nft.canister}</Copier></p>
-    {#await isAuthorized() then isAuthorized}
-    {#if isAuthorized}
-    <a class="transfer_button" href="/{nft.canister}/{nft.index}/transfer">Transfer</a>
-    {/if}
-    {/await}
+        {/await}
+
+    </Card>
 </div>
 
 <style>
@@ -43,7 +58,7 @@
         display: flex;
         justify-items: center;
         flex-direction: column;
-        width: 330px;
+        /* width: 330px; */
         max-height: 80vh;
     }
     p {
