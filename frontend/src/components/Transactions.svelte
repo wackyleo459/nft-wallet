@@ -1,28 +1,21 @@
 <script >
-    import { transactionHistory } from '../transactionHistory.js';
+    import { transactionHistory } from '../storage/transactionHistory.js';
     import { isAuthorized } from '../nft.js';
-    let transactions;
-    // let transactionHistory = writable([{
-    //   date: new Date(),
-    //   nft: 100,
-    //   detail: 'test'
-    // }]);
 
-    // const unsubscribe = transactionHistory.subscribe(value => {
-    //   transactions = value;
-    // })
-    setTimeout(() => console.log('transactions component', $transactionHistory), 3000);
+
+      console.log('whenever transactions change', $transactionHistory);
+
 </script>
 
 <div id="transactions">
+  Transactions
     {#await isAuthorized() then isAuthorized}
     {#if isAuthorized}
       {#if $transactionHistory.length > 0}
           {#each $transactionHistory as transaction, idx}
             <div class="transaction">
-              Transaction
                 <div class="trans_date">{transaction.date}</div>
-                <div class="trans_nft">{transaction.nft}</div>
+                <div class="trans_nft">NFT ITEM {transaction.nft}</div>
                 <div class="trans_details">{transaction.detail}</div>
             </div>
           {/each}
@@ -40,5 +33,13 @@
 </div>
 
 <style>
-
+  .transaction {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 15px 0;
+  }
+  .transaction>div {
+    border: solid 1px green;
+  }
 </style>

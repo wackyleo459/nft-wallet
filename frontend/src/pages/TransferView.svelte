@@ -3,7 +3,7 @@
     import * as nftAgent from '../nft';
     export let nft;
     import Loader, {loadSpinner, hideSpinner} from '../components/Loader.svelte';
-    import { addTransaction } from '../transactionHistory.js';
+    import { addTransaction } from '../storage/transactionHistory.js';
     import page from 'page';
 
     export let pageState;

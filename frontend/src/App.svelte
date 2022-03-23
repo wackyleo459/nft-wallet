@@ -6,29 +6,19 @@
     import TransferView from './pages/TransferView.svelte';
     import Authenticator, {_logout, login, isLoggedIn} from './components/Authenticator.svelte';
     import RegisterView from './pages/RegisterView.svelte';
-    import Loader, {loadSpinner} from './components/Loader.svelte';
+    import Loader from './components/Loader.svelte';
     import Transactions from './components/Transactions.svelte';
-    import {transactionHistory} from './transactionHistory.js';
-    export let page = {};
 
+    export let page: object = {};
     import { Menu, Menuitem } from 'svelte-mui/src';
     import { getCanisterId } from './nft';
 
     let canisterId = getCanisterId();
-
     let named = "mainLoader";
+    // function goHome() {
+    //    pageModule('/');
+    // };
 
-    // function viewTransactions() {
-    //     app.$set({ page: { transactions: true } })
-    // }
-    // setInterval(() => console.log('transactions array',$transactionHistory), 3000);
-    function echo() {
-
-        console.log('state', page);
-        setTimeout(()=> {
-            console.log('4s state', page);
-        }, 4000)
-    }
     import {
         Theme,
         RadioButtonGroup,
@@ -36,19 +26,22 @@
         } from "carbon-components-svelte";
 
     let theme = "g90";
+
 </script>
+
 <!-- <Theme bind:theme/> -->
 <div class="navBar">
-        <div id="title" style="grid-area: title">
-            <img id="wallet" style="grid-area: icon" src="/images/wallet.png" alt="wallet"/>
+        <div id="title">
+            <img id="wallet" src="/images/wallet.png" alt="wallet"/>
             <a href="/" id="nft_wallet_title"class="ui">NFT Wallet</a>
         </div>
 
         <div class="buttons">
             <button type="button" id="home_button" class="nav_button button">
+                <!-- on:click|preventDefault={goHome}>Home -->
                 <a class="nav_b" href="/">Home</a>
             </button>
-            <button type="button" id="register_button" class="nav_button button" on:click={echo}>
+            <button type="button" id="register_button" class="nav_button button">
                 <a class="nav_b" href="/register">Register</a>
             </button>
             <Menu class="menu" origin="top right" dy=38 duration=150 width=3>
@@ -127,6 +120,7 @@
         grid-row-end: 2;
     }
     #title {
+        grid-area: title;
         display: flex;
         align-items: center;
         margin-bottom: 0;
@@ -150,6 +144,7 @@
         }
     }
     img#wallet {
+        grid-area: icon;
         object-fit: contain;
         max-height: 60px;
         height: 1em;

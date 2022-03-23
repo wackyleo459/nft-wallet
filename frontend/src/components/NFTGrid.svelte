@@ -6,7 +6,7 @@
 </script>
 <div class="collection">
     <div class="section">Collection</div>
-    <hr style="color: rgb(123, 117, 117)">
+    <hr>
     <div class="container">
         {#each nfts as nft}
         <div class="paper-container box">
@@ -34,5 +34,8 @@
     li.box:hover {
         margin-top: 3px;
         border-radius: 10px;
+    }
+    hr {
+        color: rgb(123, 117, 117);
     }
 </style>

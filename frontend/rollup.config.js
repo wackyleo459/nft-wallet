@@ -7,7 +7,6 @@ import css from "rollup-plugin-css-only";
 import replace from "@rollup/plugin-replace";
 import inject from "rollup-plugin-inject";
 import json from "@rollup/plugin-json";
-// import html from "@rollup/plugin-html";
 import sveltePreprocess from "svelte-preprocess";
 import typescript from "@rollup/plugin-typescript";
 import { initCanisterIds, serve } from "./util";
@@ -27,6 +26,7 @@ export default {
   },
   plugins: [
     svelte({
+      preprocess: sveltePreprocess({ sourceMap: !production }),
       compilerOptions: {
         // enable run-time checks when not in production
         dev: !production,
@@ -66,11 +66,15 @@ export default {
       )
     ),
     commonjs(),
+    typescript({
+      sourceMap: !production,
+      inlineSources: !production,
+    }),
     inject({
       Buffer: ["buffer", "Buffer"],
     }),
     json(),
-    typescript(),
+
     // In dev mode, call `npm run start` once
     // the bundle has been generated
     !production && serve(),

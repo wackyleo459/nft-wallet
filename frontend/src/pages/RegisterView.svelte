@@ -1,9 +1,8 @@
 <script>
+    import { addTransaction, transactionHistory } from '../storage/transactionHistory.js';
     import * as nftAgent from '../nft';
     import { Principal } from '@dfinity/principal';
     import Loader, {loadSpinner, hideSpinner} from '../components/Loader.svelte';
-    import { addTransaction } from '../transactionHistory.js';
-    import page from "page";
 
     let canister;
     let index;
@@ -11,6 +10,7 @@
     let message;
     let nextPage = true;
     $:canSubmit = validPrincipal(canister) && typeof index === 'number';
+    console.log('from register:', $transactionHistory);
 
     let validCanister;
     function validPrincipal(principal) {
@@ -62,6 +62,10 @@
             page("/");
         }
     }
+</script>
+<script context="module">
+    import page from "page";
+    export const pageModule = page;
 </script>
 
 <div class="register-view">
