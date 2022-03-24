@@ -15,21 +15,21 @@
 
     let canisterId = getCanisterId();
     let named = "mainLoader";
-    // function goHome() {
-    //    pageModule('/');
-    // };
-
+    import "carbon-components-svelte/css/all.css";
     import {
         Theme,
         RadioButtonGroup,
         RadioButton,
-        } from "carbon-components-svelte";
+    } from "carbon-components-svelte";
 
     let theme = "g90";
 
+    // function goHome() {
+    //    pageModule('/');
+    // };
 </script>
 
-<!-- <Theme bind:theme/> -->
+<Theme bind:theme/>
 <div class="navBar">
         <div id="title">
             <img id="wallet" src="/images/wallet.png" alt="wallet"/>

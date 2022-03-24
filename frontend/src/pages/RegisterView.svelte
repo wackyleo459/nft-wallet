@@ -58,7 +58,6 @@
         const element = document.getElementById("snackbar");
         element.className = "";
         if (nextPage) {
-            // window.location.href = '/';
             page("/");
         }
     }
