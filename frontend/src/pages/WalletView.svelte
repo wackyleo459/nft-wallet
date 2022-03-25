@@ -11,11 +11,11 @@
         <h2>
             Welcome to the nft wallet for the IC
         </h2><br/>
-        The wallet can hold countless NFTs, all in a single secure wallet! <br/>Start adding your NFTs here. Once in your wallet, you can view, send, receive NFTs, and more!"
+        The wallet can hold countless NFTs, all in a single secure wallet. <br/>Once in your wallet, you can view, send, receive NFTs and more!
         <div class="action">
-            Please login
+            Start adding your NFTs here.
             <br><br>
-            <Button variant="raised" on:click={login}>
+            <Button id="button" variant="raised" on:click={login}>
                 <Label>LOGIN</Label>
             </Button>
         </div>
@@ -34,28 +34,36 @@
 </div>
 
 <style>
+    @media (max-width: 375px) {
+        .wallet-view {
+            width: 100%;
+            line-height: 1.2rem;
+            padding: 1em;
+        }
+        h2 {
+            font-size: 28px;
+        }
+    }
+    @media (min-width: 425px) {
+        .wallet-view {
+            text-align: center;
+            padding: 3em;
+        }
+    }
     .wallet-view {
         width: 100%;
         line-height: 1.5rem;
-        padding: 3em;
         display: flex;
         flex-direction: column;
-        border-radius: 15px;
         font-size: 16px;
         justify-content: center;
     }
-    .button {
-        height: 3em;
-        align-items: center;
-        display: flex;
-        margin: 2em;
-    }
+
     .action {
         height: 300px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        font-size: 1.5em;
     }
 </style>
