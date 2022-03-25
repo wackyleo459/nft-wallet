@@ -1,8 +1,8 @@
-<script>
-  import * as nftAgent from '../nft';
-  import Copier from './Copier.svelte';
-</script>
 <script context="module">
+    import * as nftAgent from '../nft';
+    import Copier from './Copier.svelte';
+    import { Dialog, Button } from 'svelte-mui';
+
     let _isAuthenticated = nftAgent.isAuthenticated();
     let _isAuthorized = nftAgent.isAuthorized();
     async function getCommand() {
@@ -12,7 +12,15 @@
     function retry() {
         _isAuthenticated = nftAgent.isAuthenticated();
     }
-    export let isLoggedIn = false;
+
+    export async function isLoggedIn() {
+        const authenticated = await nftAgent.isAuthenticated();
+        if (authenticated) {
+            return true;
+        }
+        return false;
+    };
+
     export function login() {
         nftAgent.authenticate(() => {
             _isAuthenticated = nftAgent.isAuthenticated();
@@ -24,49 +32,74 @@
         _isAuthenticated = nftAgent.isAuthenticated();
         window.location.href = '/'
     }
+    function hideModal() {
+        document.getElementsByClassName('authenticator')[0].style.visibility = 'hidden';
+    }
+    async function showModal() {
+        const authenticated = await nftAgent.isAuthenticated();
+		const authorized = await nftAgent.isAuthorized();
+        if (!authenticated || !authorized) {
+            document.getElementsByClassName("authenticator")[0].style.visibility = 'visible';
+        }
+    }
+    showModal();
+
+    isLoggedIn().then(a => console.log('isLoggedIn?', a));
 </script>
 
 <div class="authenticator">
-    {#await _isAuthenticated then isAuthenticated}
+        {#await _isAuthenticated then isAuthenticated}
         {#if isAuthenticated}
             {#await _isAuthorized then isAuthorized}
-            {#if isAuthorized}
-            {isLoggedIn = true}
-            <button on:click={_logout}>Log out</button>
-            {:else}
-            <p class="info">Unregistered user -
-                {#await getCommand()}
-                <s>copy registration command &cross;</s>
-                {:then command}
-                <Copier always text={command} --default-color="#999">copy registration command</Copier>
-                {/await}
-            </p>
-            <button on:click={_logout}>Log out</button>
+            {#if !isAuthorized}
+            <!-- logged in first time -->
+            <Dialog visible=true>
+                <div slot="title" class="title"> Welcome!<br> <p>Unregistered User</p> </div>
+                <p class="info">
+                    {#await getCommand()}
+                    <s>click here to copy registration command &cross;</s>
+                    {:then command}
+                    <Copier always text={command} --default-color="#999">click to copy registration command</Copier>
+                    {/await}
+                    <br>
+                    <br>
+                    Type command into your nft-wallet terminal to authorize your identity.
+                    Then refresh page.
+                </p>
+                <Button on:click={hideModal}>Okay</Button>
+            </Dialog>
             {/if}
             {:catch}
-            <p>
-                <span class="error">
-                    Can't reach canister
-                    {#if !nftAgent.isMainnet()}
-                    (is the replica running?)
-                    {/if}
-                </span>
-                <button on:click={_logout}>Logout</button>
-            </p>
+            <!-- logged in doesn't work  -->
+            <Dialog visible=true>
+                <div slot="title" class="title">Problem!</div>
+                <p>
+                    <span class="error">
+                        Can't reach canister
+                        {#if !nftAgent.isMainnet()}
+                        (is the replica running?)
+                        {/if}
+                    </span>
+                </p>
+                <Button on:click={hideModal}>Okay</Button>
+            </Dialog>
             {/await}
-        {:else}
-        {isLoggedIn = false}
-        <button on:click={login}>Login</button>
         {/if}
-    {:catch}
-    <p class="error">Could not reach Internet Identity <button on:click={retry}>Retry &circlearrowright;</button></p>
-    {/await}
+        {:catch}
+        <!-- reaching II doesn't work -->
+        <Dialog visible=true>
+            <div slot="title" class="title">Error</div>
+            <p class="error">Could not reach Internet Identity</p>
+            <Button on:click={retry}>Retry &circlearrowright;</Button>
+        </Dialog>
+        {/await}
+
 </div>
 
 <style>
     button {
         background-color: #666;
-        color: white;
+        color: black;
         font-size: 14px;
     }
     p {
@@ -77,7 +110,14 @@
         font-size: 14px;
     }
     .authenticator {
+        visibility: hidden;
         display:flex;
         flex-direction: column;
+    }
+    .title {
+        color: black;
+    }
+    .content {
+        color: black;
     }
 </style>

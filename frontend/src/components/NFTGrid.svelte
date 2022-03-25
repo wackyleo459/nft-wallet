@@ -25,7 +25,6 @@
         margin: 1em;
     }
     .box {
-        width: 13em;
         padding: 1em;
     }
     .collection {

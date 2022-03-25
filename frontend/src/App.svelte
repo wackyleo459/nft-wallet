@@ -4,32 +4,36 @@
     import CollectionView from './pages/CollectionView.svelte';
     import CanisterId from './components/CanisterId.svelte';
     import TransferView from './pages/TransferView.svelte';
-    import Authenticator, {_logout, login, isLoggedIn} from './components/Authenticator.svelte';
-    import RegisterView from './pages/RegisterView.svelte';
+    import Authenticator, {isLoggedIn, _logout, login} from './components/Authenticator.svelte';
+    import RegisterView, {pageModule} from './pages/RegisterView.svelte';
     import Loader from './components/Loader.svelte';
     import Transactions from './components/Transactions.svelte';
-
-    export let page: object = {};
-    import { Menu, Menuitem } from 'svelte-mui/src';
     import { getCanisterId } from './nft';
 
+    export let page: object = {};
     let canisterId = getCanisterId();
     let named = "mainLoader";
-    import "carbon-components-svelte/css/all.css";
-    import {
-        Theme,
-        RadioButtonGroup,
-        RadioButton,
-    } from "carbon-components-svelte";
 
+    import { Menu, Menuitem } from 'svelte-mui/src';
+    // import Menu from '@smui/menu';
+    import type { MenuComponentDev } from '@smui/menu';
+    import Button, {Label} from "@smui/button";
+    import List, { Item, Separator, Text } from '@smui/list';
+    import { Anchor } from '@smui/menu-surface';
+    let menu: MenuComponentDev;
+    let anchor: HTMLDivElement;
+
+    import "carbon-components-svelte/css/all.css";
+    import { Theme } from "carbon-components-svelte";
     let theme = "g90";
 
-    // function goHome() {
-    //    pageModule('/');
-    // };
+    function goHome() {
+       pageModule('/');
+    };
+
 </script>
 
-<Theme bind:theme/>
+<Theme bind:theme persist persistKey="__carbon-theme" />
 <div class="navBar">
         <div id="title">
             <img id="wallet" src="/images/wallet.png" alt="wallet"/>
@@ -37,24 +41,35 @@
         </div>
 
         <div class="buttons">
-            <button type="button" id="home_button" class="nav_button button">
-                <!-- on:click|preventDefault={goHome}>Home -->
-                <a class="nav_b" href="/">Home</a>
+            <button type="button" id="home_button" class="nav_button button"
+                on:click|preventDefault={goHome}>Home
+                <!-- <a class="nav_b" href="/">Home</a> -->
             </button>
             <button type="button" id="register_button" class="nav_button button">
                 <a class="nav_b" href="/register">Register</a>
             </button>
             <Menu class="menu" origin="top right" dy=38 duration=150 width=3>
+            <!-- <Button on:click={()=> menu.setOpen(true)}>
+                <Label>Account</Label>
+            </Button>
+            <Menu bind:this={menu}
+                anchor={false}
+                bind:anchorElement={anchor}
+                anchorCorner='BOTTOM_RIGHT'
+                > -->
+
                 <div slot="activator">
                     <button type="button" id="collection_button" class="nav_button button">
                         Account
                     </button>
                 </div>
-                {#if !isLoggedIn}
-                <Menuitem on:click={login}>Login</Menuitem>
-                {:else}
-                <Menuitem on:click={_logout}>Logout</Menuitem>
-                {/if}
+                {#await isLoggedIn() then loggedIn}
+                    {#if !loggedIn}
+                    <Menuitem on:click={login}>Login</Menuitem>
+                    {:else}
+                    <Menuitem on:click={_logout}>Logout</Menuitem>
+                    {/if}
+                {/await}
                 <Menuitem>
                     <a href="/transactions">Transactions</a></Menuitem>
                 <hr />
@@ -66,12 +81,14 @@
 
         </div>
     </div>
+
+
+
 <main class="main">
+    <Authenticator/>
 
     <Loader named={named}/>
-    <!-- <div id="NFT_wallet">
-        <Authenticator/>
-    </div> -->
+
 
     <div class="content">
         {#if page.nft}
@@ -99,7 +116,7 @@
         padding: 1em;
         background-color: grey;
     }
-    main {
+    main.main {
             margin: 0 15px auto;
             height: 92vh;
             display: grid;
@@ -202,13 +219,13 @@
         align-items: center;
         justify-content: center;
     }
-    #NFT_wallet {
-        display: flex;
-        flex-direction: column;
-        align-items: baseline;
-        margin: 0 1.3em;
-        justify-content: space-between;
-    }
+    // #NFT_wallet {
+    //     display: flex;
+    //     flex-direction: column;
+    //     align-items: baseline;
+    //     margin: 0 1.3em;
+    //     justify-content: space-between;
+    // }
     button {
         width: 100px;
     }

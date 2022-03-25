@@ -18,7 +18,6 @@
   </script>
 <Theme bind:theme />
 <div id="transactions">
-  Transactions
   {#await isAuthorized() then isAuthorized}
   {#if isAuthorized}
     {#if $transactionHistory.length > 0}

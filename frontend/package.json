@@ -39,7 +39,9 @@
   "dependencies": {
     "@dfinity/agent": "^0.10.2",
     "@dfinity/auth-client": "^0.10.2",
+    "@smui/button": "^6.0.0-beta.15",
     "@smui/icon-button": "^6.0.0-beta.15",
+    "@smui/menu-surface": "^6.0.0-beta.15",
     "js-base64": "^3.7.2",
     "mime": "^3.0.0",
     "multiformats": "^9.6.2",
@@ -48,6 +50,7 @@
     "postcss": "^8.4.8",
     "rollup-plugin-postcss": "^4.0.2",
     "sirv-cli": "^1.0.0",
+    "svelte-carousel": "^1.0.17-rc4",
     "svelte-material-ui": "^6.0.0-beta.15"
   }
 }
