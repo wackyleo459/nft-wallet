@@ -1,8 +1,9 @@
 <script>
     import { transactionHistory } from '../storage/transactionHistory.js';
-    import { isAuthorized } from '../nft.js';
+    import { isAuthorized } from "../nft.js";
     import "carbon-components-svelte/css/white.css";
     import { Theme, DataTable } from "carbon-components-svelte";
+    import page from "page";
     let theme = "g80";
     $: transaction_rows = $transactionHistory.map((transaction, i) => {
       const date = (new Date(transaction.date)).toLocaleString();
@@ -40,8 +41,11 @@
     {/if}
     {:else}
       <div class="transaction">
-        No transactions record, you must login first.
+      No transactions record, you must login first.
       </div>
+      {#await setTimeout(()=> page('/'), 3000)}
+      ...
+      {/await}
   {/if}
   {/await}
 </div>
