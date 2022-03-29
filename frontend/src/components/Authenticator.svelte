@@ -43,8 +43,6 @@
         }
     }
     showModal();
-
-    isLoggedIn().then(a => console.log('isLoggedIn?', a));
 </script>
 
 <div class="authenticator">

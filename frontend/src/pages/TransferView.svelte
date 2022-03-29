@@ -5,13 +5,15 @@
     import Loader, {loadSpinner, hideSpinner} from '../components/Loader.svelte';
     import { addTransaction } from '../storage/transactionHistory.js';
     import page from 'page';
+    import { Modal, Form, FormGroup, Checkbox, Button, TextInput, Select, SelectItem } from "carbon-components-svelte";
+    import { loop_guard } from 'svelte/internal';
 
     export let pageState;
     let loaderId = "transferLoader";
     let message;
     let nextPage = true;
     let principal;
-    let notify = 'maybe';
+    let notify;
     let confirmed = false;
     $:canSubmit = confirmed && validData({principal, notify});
 
@@ -29,7 +31,6 @@
         }
 
     }
-
     function transfer() {
         if (!validData({principal, notify})) {
             return;
@@ -61,19 +62,25 @@
             showSnackbar();
         });
     }
-    let errorMessage;
+    let errorMessage1;
+    let errorMessage2;
     function validData({principal, notify}) {
-        try {
-            Principal.fromText(principal);
-        } catch {
-            errorMessage = 'Invalid principal';
-            return false;
+        if (principal) {
+            try {
+                Principal.fromText(principal);
+            } catch {
+                errorMessage1 = 'Invalid principal';
+                return false;
+            }
         }
-        if (!(['no', 'maybe', 'yes'].includes(notify))) {
-            errorMessage = 'Select a valid notify option';
-            return false;
+        if (notify) {
+            if (!(['no', 'maybe', 'yes'].includes(notify))) {
+                errorMessage2 = 'Select a valid notify option';
+                return false;
+            }
         }
-        errorMessage = null;
+        errorMessage1 = null;
+        errorMessage2 = null;
         return true;
     }
     let _isAuthorized = nftAgent.isAuthorized();
@@ -83,37 +90,53 @@
     <Loader named={loaderId}/>
     {#await _isAuthorized then isAuthorized}
     {#if isAuthorized}
+    <Modal open=true modalHeading=""
+        primaryButtonText="Transfer NFT"
+        secondaryButtonText="Cancel"
+        hasForm=true
+        primaryButtonDisabled={!canSubmit? true: false}
+        on:submit={(e)=> {
+            e.preventDefault();
+            transfer()}}
+        on:click:button--secondary={(e)=> page(`/${nft.canister}/${nft.index}`)}
+        >
+        <h2>Transfer {nft.name} ({nft.symbol}) #{nft.index}</h2>
         <div id="snackbar">{message}
             <button id="snack_button" on:click={hideSnackbar}>Okay</button>
         </div>
-        <form on:submit|preventDefault={transfer} class="form">
-            <h2>Transfer {nft.name} ({nft.symbol}) #{nft.index}</h2>
-            <label for="principal">Principal to transfer to:</label>
-            <input type="text" id="principal" bind:value={principal}>
+        <Form
+            on:submit={(e) => {
+                e.preventDefault();
+                transfer();
+            }}
+            >
 
-            <label id="label_notify" for="notify">Notify the recipient?</label>
-            <select id="notify" bind:value={notify}>
-                <option value="no">No</option>
-                <option value="maybe" selected>Yes, but transfer anyway if unsupported</option>
-                <option value="yes">Yes, and don't transfer without it</option>
-            </select>
-
-            <div class="agreement">
-                <input type="checkbox" id="confirm" bind:checked={confirmed}>
-                <label for="confirm">I understand that if this principal is wrong, I'm probably not getting this NFT back.</label>
-            </div>
-            <div class="div_button_primary">
-                <button type="submit" class ="button_primary {!canSubmit ? "disabled": null}">
-                    Transfer
-                </button>
-            </div>
-            {#if errorMessage}
-            <p class="error">{errorMessage}</p>
-            {/if}
-        </form>
-        {:else}
+            <FormGroup>
+                <TextInput size="large" labelText="Principal to transfer to" placeholder="Enter valid Principal..." bind:value={principal} on:change={(e) => validData({principal})}/>
+                {#if errorMessage1}
+                    <p class="error">{errorMessage1}</p>
+                {/if}
+            </FormGroup>
+            <FormGroup>
+                <Select labelText="Notify Recipient?" selected="select" on:change={(e) =>
+                    notify=e.detail}>
+                    <SelectItem value="select" text="Select from the following..." />
+                    <SelectItem value="no" text="No" />
+                    <SelectItem value="maybe" text="Yes, but transfer anyway if unsupported" />
+                    <SelectItem value="yes" text="Yes, and don't transfer without it" />
+                </Select>
+                {#if errorMessage2}
+                    <p class="error">{errorMessage2}</p>
+                {/if}
+            </FormGroup>
+            <FormGroup>
+                <Checkbox id="checkbox-0" labelText="I understand that if this principal is wrong, I'm probably not getting this NFT back." bind:checked={confirmed}/>
+            </FormGroup>
+        </Form>
+    </Modal>
+    {:else}
         <p>You must be an authorized user to transfer NFTs out of this wallet.</p>
-        {/if}
+    {/if}
     {:catch}
     <p>You can't transfer NFTs out of this wallet if the canister can't be accessed.</p>
     {/await}
@@ -121,45 +144,9 @@
 
 <style>
     h2 {
-        text-align: center;
+        /* text-align: center; */
         padding-bottom: 1em;
-    }
-    form {
-        max-width: 500px;
-        margin: 2.5em;
-    }
-    input {
-        width: 100%;
-    }
-    .agreement {
-        padding: 1.5em 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .agreement label {
-        max-width: 90%;
-        font-size: 14px;
-    }
-    label {
-        margin-right: 1em;
-        margin-bottom: 0.5em;
-    }
-    #principal {
-        margin-bottom: 1em;
-        margin-top: 0.5em;
-    }
-    #confirm {
-        width: fit-content;
-        margin-right: 15px;
-        background-color: #282829;
-    }
-    #label_notify {
-        margin-top: 1em;
-    }
-    #notify {
-        height: 30px;
-        padding: 0 5px;
+        font-size: 30px;
     }
     #transferView {
         display: flex;
