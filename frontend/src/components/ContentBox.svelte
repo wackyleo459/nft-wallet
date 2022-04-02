@@ -6,9 +6,10 @@
     $:fallback = !contentType.startsWith('image')
         && !contentType.startsWith('video')
         && !contentType.startsWith('audio');
+    $: {console.log('contentBox src', src)}
 </script>
 
-<div class:fallback>
+<div id="contentBox" class:fallback>
     {#if contentType.startsWith('image')}
     <img {src} alt="NFT content page">
     {:else if contentType.startsWith('video')}

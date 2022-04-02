@@ -15,6 +15,9 @@ page("/", () => {
 page("/register", () => {
   app.$set({ page: { register: true } });
 });
+page("/login", () => {
+  app.$set({ page: { login: true } });
+});
 page("/transactions", () => {
   app.$set({ page: { transactions: true } });
 });

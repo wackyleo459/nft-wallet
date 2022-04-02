@@ -5,6 +5,9 @@
     import ContentBox from './ContentBox.svelte';
     import Paper, { Title, Subtitle, Content } from '@smui/paper';
     export let nft;
+    $: {
+        console.log('nft', nft, '\nnft.preview?.value', nft.preview?.value);
+    }
 </script>
 
 <Paper elevation=4 color="grey">
@@ -26,7 +29,7 @@
     </div>
 </Paper>
 
-<style>
+<!-- <style>
     .preview {
         border-radius: 5px 5px 0 0;
         background: white;
@@ -40,4 +43,4 @@
         font-family: 'Noto Sans', sans-serif;
         font-family: 'Roboto Mono', monospace;
     }
-</style>
+</style> -->

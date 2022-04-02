@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
     import WalletView from './pages/WalletView.svelte';
     import NFTView from './pages/NFTView.svelte';
     import CollectionView from './pages/CollectionView.svelte';
@@ -10,30 +10,35 @@
     import Transactions from './components/Transactions.svelte';
     import { getCanisterId } from './nft';
 
-    export let page: object = {};
+    export let page = {};
     let canisterId = getCanisterId();
     let named = "mainLoader";
-
     import { Menu, Menuitem } from 'svelte-mui/src';
-    // import Menu from '@smui/menu';
-    import type { MenuComponentDev } from '@smui/menu';
+    import Menu1 from '@smui/menu';
     import Button, {Label} from "@smui/button";
     import List, { Item, Separator, Text } from '@smui/list';
     import { Anchor } from '@smui/menu-surface';
-    let menu: MenuComponentDev;
-    let anchor: HTMLDivElement;
+    let menu
+    let anchor;
 
-    import "carbon-components-svelte/css/all.css";
-    import { Theme } from "carbon-components-svelte";
+    // import "carbon-components-svelte/css/g90.css";
+    import { Theme, Breadcrumb, BreadcrumbItem } from "carbon-components-svelte";
     let theme = "g90";
-
+    $: document.documentElement.setAttribute("theme", theme);
+    document.documentElement.setAttribute("theme", theme);
+    console.log('working');
     function goHome() {
        pageModule('/');
     };
-
+    function displayDropDown() {
+        document.getElementById("drop-content").style.display = "block";
+    }
+    function hideDropdDown() {
+        document.getElementById("drop-content").style.visibility = "none";
+    }
 </script>
 
-<Theme bind:theme persist persistKey="__carbon-theme" />
+<!-- <Theme bind:theme persist persistKey="__carbon-theme" /> -->
 <div class="navBar">
         <div id="title">
             <img id="wallet" src="/images/wallet.png" alt="wallet"/>
@@ -48,16 +53,34 @@
             <button type="button" id="register_button" class="nav_button button">
                 <a class="nav_b" href="/register">Register</a>
             </button>
-            <Menu class="menu" origin="top right" dy=38 duration=150 width=3>
-            <!-- <Button on:click={()=> menu.setOpen(true)}>
-                <Label>Account</Label>
-            </Button>
-            <Menu bind:this={menu}
-                anchor={false}
-                bind:anchorElement={anchor}
-                anchorCorner='BOTTOM_RIGHT'
-                > -->
+            <!-- <div class=drop on:click={displayDropDown}>Account
+                <div id=drop-content on:click={hideDropdDown}>
+                    <a href="/">Home</a>
+                </div>
+            </div> -->
+            <div use:Anchor>
+                <Button on:click={() => menu.setOpen(true)}>
+                    <Label>Account</Label>
+                </Button>
+                <Menu1 bind:this={menu}
 
+                >
+                <List>
+                    <Item on:SMUI:action={_logout}>
+                    <Text>Logout</Text>
+                    </Item>
+                    <Item on:SMUI:action={() => pageModule('/transactions')}>
+                    <Text>Transactions</Text>
+                    </Item>
+                    <Separator />
+                    <Item id="cid_menu">
+                    <Text>Wallet Canister ID</Text>
+                    <CanisterId/>
+                    </Item>
+                </List>
+                </Menu1>
+            </div>
+            <!-- <Menu class="menu" origin="top right" dy=38 duration=150 width=3>
                 <div slot="activator">
                     <button type="button" id="collection_button" class="nav_button button">
                         Account
@@ -67,31 +90,32 @@
                     {#if !loggedIn}
                     <Menuitem on:click={login}>Login</Menuitem>
                     {:else}
+                    <Menuitem on:click={() => pageModule('/profile')}>Profile</Menuitem>
                     <Menuitem on:click={_logout}>Logout</Menuitem>
                     {/if}
                 {/await}
-                <Menuitem>
-                    <a href="/transactions">Transactions</a></Menuitem>
+                <Menuitem on:click={() => pageModule('/transactions')}>Transactions</Menuitem>
+                    <a href="/transactions">Transactions</a>
                 <hr />
                 <div id="cid">Wallet Canister ID</div>
                 <Menuitem id="cid_menu">
                     <CanisterId/>
                 </Menuitem>
-            </Menu>
-
+            </Menu> -->
         </div>
     </div>
-
 
 
 <main class="main">
     <Authenticator/>
 
     <Loader named={named}/>
-
-
     <div class="content">
         {#if page.nft}
+        <Breadcrumb>
+            <BreadcrumbItem href="/">Dashboard</BreadcrumbItem>
+            <BreadcrumbItem href="/">NFT Collection</BreadcrumbItem>
+        </Breadcrumb>
         <NFTView nft={page.nft} current={page.nftCurrent}/>
         {:else if page.register}
         <RegisterView/>
@@ -108,6 +132,9 @@
     <img id="ic" src="/images/ic-badge-powered-by_bg-dark.svg" alt="powered by ic">
 
 </main>
+<footer>
+    <img id="footer_ic" src="/images/ic-badge-powered-by_bg-dark.svg" alt="powered by ic">
+</footer>
 
 <style lang="scss" global>
 
@@ -118,7 +145,7 @@
     }
     main.main {
             margin: 0 15px auto;
-            height: 92vh;
+            min-height: calc(100vh - var(--footer-height));
             display: grid;
             grid-template-rows: 1fr auto
         }
@@ -131,10 +158,6 @@
         .buttons {
             justify-content: flex-end;
         }
-    }
-    .content {
-        grid-row-start: 1;
-        grid-row-end: 2;
     }
     #title {
         grid-area: title;
@@ -167,9 +190,6 @@
         height: 1em;
         margin-right: 10px;
     }
-    a#nft_wallet_title {
-        font-size-adjust:inherit;
-    }
     .buttons {
         grid-area: buttons;
         display: flex;
@@ -188,12 +208,14 @@
         justify-content: center;
     }
     .content {
-        margin-top: 3em;
+        grid-row-start: 1;
+        grid-row-end: 2;
+        margin-top: 2em;
         /* height: 70vh; */
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
+        /* justify-content: space-between;
+        // align-items: center; */
     }
     img#ic {
         grid-row-start: 2;
@@ -212,6 +234,10 @@
     .nav_button {
         border-radius: 4px;
         background-color: transparent;
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;;
     }
 
     a.nav_b {
@@ -219,13 +245,7 @@
         align-items: center;
         justify-content: center;
     }
-    // #NFT_wallet {
-    //     display: flex;
-    //     flex-direction: column;
-    //     align-items: baseline;
-    //     margin: 0 1.3em;
-    //     justify-content: space-between;
-    // }
+
     button {
         width: 100px;
     }
@@ -237,5 +257,24 @@
         display: flex;
         flex-direction: column;
     }
-
+    .drop {
+        position: relative;
+        display: inline-block;
+    }
+    #drop-content {
+        position: absolute;
+        background-color: #8842d5;
+        min-width: 150px;
+        padding: 15px;
+        z-index: 1;
+        display: none;
+    }
+    #footer_ic {
+        position:sticky;
+        bottom: 2rem;
+    }
+    footer {
+        position: relative;
+        height: var(--footer-height);
+    }
 </style>

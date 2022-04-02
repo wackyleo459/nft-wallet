@@ -5,6 +5,10 @@
     export let content;
     export let current;
     $:currentElement = content[current];
+    $: {
+        console.log('carousel current Element', currentElement);
+        console.log('carousel content:', content, '\ncarousel current:', current);
+        };
 </script>
 
 <div class="box">

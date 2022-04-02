@@ -16,3 +16,8 @@ dist/
 
 # backend code
 /target
+.history
+
+# environment variables
+.env.development
+.env.production

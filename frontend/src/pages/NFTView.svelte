@@ -70,7 +70,7 @@
     </div>
 </div>
 
-<style>
+<!-- <style>
     .NFT_view {
         max-height: 80vh;
     }
@@ -125,4 +125,4 @@
     #action_calls {
         padding: 2em 0;
     }
-</style>
+</style> -->

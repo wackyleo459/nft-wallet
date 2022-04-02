@@ -3,6 +3,7 @@
     import * as nftAgent from '../nft';
     import { Principal } from '@dfinity/principal';
     import Loader, {loadSpinner, hideSpinner} from '../components/Loader.svelte';
+    import { Tile, Form, TextInput, Select, SelectItem } from "carbon-components-svelte";
 
     let canister;
     let index;
@@ -76,6 +77,12 @@
     </div>
     {#await nftAgent.isAuthorized() then isAuthorized}
     {#if isAuthorized}
+    <Tile>
+        <Form>
+            <h2>Register a new NFT</h2>
+
+        </Form>
+    </Tile>
     <form class="form" on:submit|preventDefault={register}>
         <h2>Register a new NFT</h2>
         <div id="form_top">
@@ -98,12 +105,11 @@
             <span class="error">Missing index</span>
             {/if}
             <br>
-            <div class="div_button_primary">
-                <button type="submit" class ="button_primary">
-                    Register
-                </button>
-            </div>
-
+        </div>
+        <div class="div_button_primary">
+            <button type="submit" class ="button_primary">
+                Register
+            </button>
         </div>
     </form>
     {:else}
@@ -116,7 +122,7 @@
     .register-view {
         margin-top: 20px;
         margin-bottom: 20px;
-        max-width: 550px;
+        /* max-width: 550px; */
         display: flex;
         flex-direction: column;
         align-items: center;
