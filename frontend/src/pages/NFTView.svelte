@@ -39,10 +39,10 @@
         </Tile>
     </div>
     <div class="nft_info">
-        <div class="info_title">Minted Date</div>
+        <div class="info_title">Content Type</div>
         <hr>
-        <div class="info_detail">12/25/21</div>
-        <div class="info_title">Type</div>
+        <div class="info_detail">{nft.content[0].contentType}</div>
+        <div class="info_title">Detail</div>
         <hr>
         <div class="info_detail">
             <img src={nft.icon} alt="{nft.name} NFT icon" class="icon">
@@ -71,9 +71,6 @@
 </div>
 
 <style>
-    .NFT_view {
-        max-height: 80vh;
-    }
     #tile {
         margin: 1em;
     }
