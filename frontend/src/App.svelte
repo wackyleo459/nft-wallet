@@ -25,7 +25,7 @@
 
     import "carbon-components-svelte/css/all.css";
     import { Theme } from "carbon-components-svelte";
-    let theme = "g90";
+    let theme = "g80";
 
     function goHome() {
        pageModule('/');
@@ -82,14 +82,9 @@
         </div>
     </div>
 
-
-
 <main class="main">
     <Authenticator/>
-
     <Loader named={named}/>
-
-
     <div class="content">
         {#if page.nft}
         <NFTView nft={page.nft} current={page.nftCurrent}/>
@@ -105,12 +100,12 @@
         <WalletView/>
         {/if}
     </div>
-    <img id="ic" src="/images/ic-badge-powered-by_bg-dark.svg" alt="powered by ic">
-
+    <footer id="footer">
+        <img id="ic" src="/images/ic-badge-powered-by_bg-dark.svg" alt="powered by ic">
+    </footer>
 </main>
 
 <style lang="scss" global>
-
     .navBar {
         border-bottom: solid 3px #7f7f7f;
         padding: 1em;
@@ -118,9 +113,7 @@
     }
     main.main {
             margin: 0 15px auto;
-            height: 92vh;
-            display: grid;
-            grid-template-rows: 1fr auto
+            height: fit-content;
         }
     @media (min-width: 640px) {
         .navBar {
@@ -133,8 +126,8 @@
         }
     }
     .content {
-        grid-row-start: 1;
-        grid-row-end: 2;
+        min-height: calc(100vh - 100px - 3em - var(--footer-height));
+        margin-top: 3em;
     }
     #title {
         grid-area: title;
@@ -187,17 +180,7 @@
         display: flex;
         justify-content: center;
     }
-    .content {
-        margin-top: 3em;
-        /* height: 70vh; */
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        align-items: center;
-    }
     img#ic {
-        grid-row-start: 2;
-        grid-row-end: 3;
         margin: auto;
     }
     button {
@@ -213,7 +196,6 @@
         border-radius: 4px;
         background-color: transparent;
     }
-
     a.nav_b {
         display: flex;
         align-items: center;
@@ -229,7 +211,6 @@
     button {
         width: 100px;
     }
-
     #cid {
         margin: 0 15px;
     }
@@ -237,5 +218,11 @@
         display: flex;
         flex-direction: column;
     }
-
+    #footer {
+        position: relative;
+        bottom: 1rem;
+        width: fit-content;
+        margin: 0 auto;
+        height: var(--footer-height);
+    }
 </style>

@@ -1,4 +1,5 @@
 :root {
+  --footer-height: 42px;
   --color-black: #161617;
   --default-copy-icon-color: white;
   --default-highlight-copy-icon-color: #e4adff;
