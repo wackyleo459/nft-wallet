@@ -139,10 +139,11 @@ select {
 }
 .button {
   font-size: 16px;
-  /* height: 2em; */
+  height: 2em;
   display: flex;
   align-items: center;
   box-sizing: border-box;
+  justify-content: center;
 }
 .section {
   font-size: 1.4em;
@@ -151,6 +152,10 @@ select {
 }
 
 #snackbar {
+  margin: auto;
+  width: fit-content;
+  left: 0;
+  right: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -161,7 +166,7 @@ select {
   max-width: 350px;
   line-height: 1.7;
   height: fit-content;
-  background-color: rgb(223, 230, 134);
+  background-color: rgb(215 215 215);
   color: rgb(7, 7, 7);
   border-radius: 5px;
   padding: 15px 20px;
@@ -181,4 +186,47 @@ select {
   visibility: hidden;
   opacity: 0;
   transition: opacity 500ms ease-in, visibility 0ms ease-in 300ms;
+}
+
+.subnav {
+  float: left;
+  overflow: hidden;
+}
+
+.subnav:hover .subnav-content {
+  visibility: visible;
+}
+
+.navbar a:hover,
+.subnav:hover .subnavbtn {
+  background-color: grey;
+}
+.subnav-content {
+  visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 10px;
+  z-index: 1;
+  background-color: #808080;
+  padding: 10px 0;
+}
+
+/* Style the subnav links */
+.subnav-content > div,
+.subnav-content > a {
+  padding: 10px;
+  color: white;
+  text-decoration: none;
+  text-align: left;
+}
+
+/* Add a grey background color on hover */
+.subnav-content a:hover {
+  background-color: #eee;
+  color: black;
+}
+.subnav-content div:hover {
+  background-color: #eee;
+  color: black;
 }

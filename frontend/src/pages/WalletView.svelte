@@ -4,6 +4,7 @@
     import {loadSpinner, hideSpinner} from '../components/Loader.svelte';
     import Button, { Label } from '@smui/button';
     import { login } from '../components/Authenticator.svelte'
+    import { Loading } from 'carbon-components-svelte';
 </script>
 <div class="wallet-view">
     {#await isAuthorized() then isAuthorized}
@@ -21,13 +22,12 @@
         </div>
     {/if}
     {#if isAuthorized}
-        {#await fetchAllOwnedNfts() then nfts}
-            <!-- {#if !nfts }
-                {loadSpinner("mainLoader")}
-            {:else}
-            {hideSpinner("mainLoader")} -->
+        {#await fetchAllOwnedNfts()}
+            <div id="loader">
+                <Loading withOverlay={false} />
+            </div>
+            {:then nfts}
             <NFTGrid {nfts}/>
-            <!-- {/if} -->
         {/await}
     {/if}
     {/await}
@@ -58,12 +58,15 @@
         font-size: 16px;
         justify-content: center;
     }
-
     .action {
         height: 300px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+    }
+    #loader {
+        margin: auto;
+       padding-top: 250px;
     }
 </style>

@@ -11,16 +11,10 @@
 </div>
 
 <style>
-    /* p {
-        color: #666;
-        font-size: 14px;
-        margin: 0 0 8px;
-    } */
     #wallet_cid{
         display: flex;
         justify-content: center;
-        color: #666;
+        color: rgb(187, 183, 183);
         font-size: 14px;
-        margin: 0 0 8px;
     }
 </style>

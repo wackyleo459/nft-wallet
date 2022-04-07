@@ -3,8 +3,8 @@
     import * as nftAgent from '../nft';
     import { Principal } from '@dfinity/principal';
     import Loader, {loadSpinner, hideSpinner} from '../components/Loader.svelte';
-    import {Form, FormGroup, Button, TextInput } from "carbon-components-svelte";
-
+    import {Form, FormGroup, Button, TextInput, Loading } from "carbon-components-svelte";
+    let loading = false;
     let canister;
     let index;
     let showButton = false;
@@ -31,19 +31,22 @@
     }
     async function register() {
         if (!canSubmit) {return}
-        loadSpinner("registerLoader");
+        // loadSpinner("registerLoader");
+        loading = true;
         const collection = await nftAgent.fetchAllOwnedNfts();
         index = Number(index);
         collection.forEach(nft => {
             if (Number(nft.index) === index) {
-                hideSpinner("registerLoader");
+                // hideSpinner("registerLoader");
+                loading = false;
                 showButton = false;
                 message = "NFT by that index is already registered, \nbut will continue anyway...";
                 showSnackbar();
             }
         });
         const result = await nftAgent.register(canister, index);
-        hideSpinner("registerLoader");
+        // hideSpinner("registerLoader");
+        loading = false;
         if (result) {
             result.status === "fail" ? nextPage = false : nextPage = true;
             if (result.status === "success") {
@@ -72,6 +75,7 @@
 </script>
 
 <div class="register-view">
+    <Loading active={loading}/>
     <Loader named="registerLoader"/>
     <div id="snackbar">{message}
         {#if showButton}
@@ -121,9 +125,6 @@
         max-width: 650px;
         padding-top: 130px;
         padding-bottom: 130px;
-        /* display: flex;
-        flex-direction: column;
-        align-items: center; */
     }
     h2 {
         text-align: center;
@@ -149,8 +150,5 @@
         border: solid 2px #fcc56f;
         color: black;
         width: 40%;
-        /* padding: 7px 100px; */
-        /* margin-top: 12px;
-        margin-bottom: 5px; */
     }
 </style>

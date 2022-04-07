@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
     import WalletView from './pages/WalletView.svelte';
     import NFTView from './pages/NFTView.svelte';
     import CollectionView from './pages/CollectionView.svelte';
@@ -6,22 +6,9 @@
     import TransferView from './pages/TransferView.svelte';
     import Authenticator, {isLoggedIn, _logout, login} from './components/Authenticator.svelte';
     import RegisterView, {pageModule} from './pages/RegisterView.svelte';
-    import Loader from './components/Loader.svelte';
     import Transactions from './components/Transactions.svelte';
-    import { getCanisterId } from './nft';
 
-    export let page: object = {};
-    let canisterId = getCanisterId();
-    let named = "mainLoader";
-
-    import { Menu, Menuitem } from 'svelte-mui/src';
-    // import Menu from '@smui/menu';
-    import type { MenuComponentDev } from '@smui/menu';
-    import Button, {Label} from "@smui/button";
-    import List, { Item, Separator, Text } from '@smui/list';
-    import { Anchor } from '@smui/menu-surface';
-    let menu: MenuComponentDev;
-    let anchor: HTMLDivElement;
+    export let page = {};
 
     import "carbon-components-svelte/css/all.css";
     import { Theme } from "carbon-components-svelte";
@@ -43,48 +30,34 @@
         <div class="buttons">
             <button type="button" id="home_button" class="nav_button button"
                 on:click|preventDefault={goHome}>Home
-                <!-- <a class="nav_b" href="/">Home</a> -->
             </button>
             <button type="button" id="register_button" class="nav_button button">
                 <a class="nav_b" href="/register">Register</a>
             </button>
-            <Menu class="menu" origin="top right" dy=38 duration=150 width=3>
-            <!-- <Button on:click={()=> menu.setOpen(true)}>
-                <Label>Account</Label>
-            </Button>
-            <Menu bind:this={menu}
-                anchor={false}
-                bind:anchorElement={anchor}
-                anchorCorner='BOTTOM_RIGHT'
-                > -->
+            <div class="subnav">
+                <button type="button" class="nav_button button" id="account_button">Account</button>
 
-                <div slot="activator">
-                    <button type="button" id="collection_button" class="nav_button button">
-                        Account
-                    </button>
+                <div class="subnav-content">
+                    {#await isLoggedIn() then loggedIn}
+                        {#if !loggedIn}
+                        <div class="log" type="button" on:click={login}>Login</div>
+                        {:else}
+                        <div class="log" type="button" on:click={_logout}>Logout</div>
+                        {/if}
+                    {/await}
+                    <a href="/transactions">Transactions</a>
+                    <div id="walletID_container">Wallet Canister ID
+                        <div id="walletID">
+                            <CanisterId/>
+                        </div>
+                    </div>
                 </div>
-                {#await isLoggedIn() then loggedIn}
-                    {#if !loggedIn}
-                    <Menuitem on:click={login}>Login</Menuitem>
-                    {:else}
-                    <Menuitem on:click={_logout}>Logout</Menuitem>
-                    {/if}
-                {/await}
-                <Menuitem>
-                    <a href="/transactions">Transactions</a></Menuitem>
-                <hr />
-                <div id="cid">Wallet Canister ID</div>
-                <Menuitem id="cid_menu">
-                    <CanisterId/>
-                </Menuitem>
-            </Menu>
-
+            </div>
         </div>
     </div>
 
 <main class="main">
     <Authenticator/>
-    <Loader named={named}/>
     <div class="content">
         {#if page.nft}
         <NFTView nft={page.nft} current={page.nftCurrent}/>
@@ -168,13 +141,16 @@
         display: flex;
         align-items: center;
     }
-    #home_button {
+    #home_button:hover {
         border: solid 1px #30ace3;
+        display: flex;
+        justify-content: center;
     }
-    #register_button {
+
+    #register_button:hover {
         border: solid 1px #893385;
     }
-    #collection_button {
+    #account_button:hover {
         border: solid 1px #fcc56f;
         color: white;
         display: flex;
@@ -186,30 +162,41 @@
     button {
         /* flex-grow: 1; */
         margin: 0 5px;
-    }
-    .nav_button a {
-        display: block;
-        width: 100%;
-        height: 100%;
+        color: white;
     }
     .nav_button {
         border-radius: 4px;
         background-color: transparent;
+        margin: 5px;
     }
     a.nav_b {
+        width: 100%;
+        height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
+        text-decoration: none;
+        color: white;
     }
-    // #NFT_wallet {
-    //     display: flex;
-    //     flex-direction: column;
-    //     align-items: baseline;
-    //     margin: 0 1.3em;
-    //     justify-content: space-between;
-    // }
-    button {
+    .buttons button:hover {
+        cursor: pointer;
+    }
+    .button {
         width: 100px;
+        border: none;
+    }
+    .log:hover{
+        cursor: pointer;
+    }
+    #walletID {
+        height: 1.5em;
+        width: 220px;
+        display: flex;
+        align-items: flex-end;
+    }
+    #walletID_container {
+        border-top: 1px solid white;
+        margin-top: 4px;
     }
     #cid {
         margin: 0 15px;
