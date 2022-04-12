@@ -257,26 +257,35 @@ export async function transfer(nft, to, notify) {
 
 export async function register(canister, index) {
   const walletCanister = await getWalletCanister();
-  const res = await walletCanister.register({
-    canister: Principal.fromText(canister),
-    index,
-  });
-  const response = {
-    status: null,
-    message: "",
-  };
 
-  if ("Err" in res) {
-    console.error(JSON.stringify(res.Err));
-    response.status = "fail";
-    response.message =
-      "Failed to register. \n\nThe NFT by that index may not exist, or your NFT Wallet is not the owner. Ensure that the wallet canister owns the NFT.";
+  try {
+    const res = await walletCanister.register({
+      canister: Principal.fromText(canister),
+      index,
+    });
+    const response = {
+      status: null,
+      message: "",
+    };
+
+    if ("Err" in res) {
+      console.error(JSON.stringify(res.Err));
+      response.status = "fail";
+      response.message =
+        "Failed to register. \n\nThe NFT by that index may not exist, or your NFT Wallet is not the owner. Ensure that the wallet canister owns the NFT.";
+    }
+    if ("Ok" in res) {
+      response.status = "success";
+      response.message = "Successfully registered.";
+    }
+    return response;
+  } catch (err) {
+    console.error(err);
+    return {
+      status: "fail",
+      message: `There was an error. Do you have the correct Principal ID for the NFT?`,
+    };
   }
-  if ("Ok" in res) {
-    response.status = "success";
-    response.message = "Successfully registered.";
-  }
-  return response;
 }
 
 let objectUrls = [];

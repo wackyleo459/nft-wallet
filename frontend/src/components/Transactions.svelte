@@ -1,7 +1,6 @@
 <script>
     import { transactionHistory } from '../storage/transactionHistory.js';
     import { isAuthorized } from "../nft.js";
-    // import "carbon-components-svelte/css/white.css";
     import { DataTable } from "carbon-components-svelte";
     import page from "page";
     let theme = "g70";
@@ -15,7 +14,6 @@
       }
     });
 
-    setTimeout(() => console.log($transactionHistory), 3000);
   </script>
 
 <div id="transactions">

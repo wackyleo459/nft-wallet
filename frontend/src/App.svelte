@@ -100,7 +100,7 @@
     }
     .content {
         min-height: calc(100vh - 100px - 3em - var(--footer-height));
-        margin-top: 3em;
+        margin-top: 1em;
     }
     #title {
         grid-area: title;
@@ -160,9 +160,7 @@
         margin: auto;
     }
     button {
-        /* flex-grow: 1; */
         margin: 0 5px;
-        color: white;
     }
     .nav_button {
         border-radius: 4px;
@@ -182,6 +180,7 @@
         cursor: pointer;
     }
     .button {
+        color: white;
         width: 100px;
         border: none;
     }

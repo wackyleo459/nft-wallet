@@ -5,9 +5,8 @@ import { TransactionStorage } from "./transactionStorage";
 export const localStorageHistory = new TransactionStorage();
 
 export const transactionHistory = writable([], () => {
-  console.log("First transaction added!");
   initialize();
-  return () => console.log("No more transactions");
+  // return () => console.log("No more transactions");
 });
 
 async function initialize() {
