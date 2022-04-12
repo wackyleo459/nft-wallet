@@ -3,38 +3,66 @@
 <script>
     import NFTBox from '../components/NFTBox.svelte';
     export let nfts;
+    import { Tile } from "carbon-components-svelte";
+    import { pageModule } from '../pages/RegisterView.svelte';
 </script>
+<div id="action">
+    <button class="button1"
+        style="margin-right: 3em; display: inline"
+        on:click={(e) => pageModule('/register')}>
+        + REGISTER
+    </button>
+    <p>Please add your NFTs to your wallet by registering if you haven't already done so.</p>
+</div>
 <div class="collection">
-    <div class="section">Collection</div>
-    <hr>
-    <div class="container">
-        {#each nfts as nft}
-        <div class="paper-container box">
-            <NFTBox {nft}/>
-        </div>
-        {/each}
+{#if !nfts.length}
+    <div class="section">
+        There is currently no collection.
     </div>
+{:else}
+    <div class="section">Collection</div>
+    <Tile>
+        <div class="container">
+            {#each nfts as nft}
+            <div class="paper-container box">
+                <NFTBox {nft}/>
+            </div>
+            {/each}
+        </div>
+    </Tile>
+{/if}
 </div>
 
 <style>
-    /* @import "@material/elevation/mdc-elevation"; */
     .container {
         list-style: none;
         display: flex;
         flex-flow: row wrap;
-        margin: 1em;
+        /* margin: 1em; */
     }
     .box {
         padding: 1em;
     }
     .collection {
         width: inherit;
+        padding-top: 10px;
     }
     li.box:hover {
         margin-top: 3px;
         border-radius: 10px;
     }
-    hr {
-        color: rgb(123, 117, 117);
+    .section {
+        font-family: 'Roboto Mono', monospace;
+        font-family: 'Noto Sans', sans-serif;
+        font-weight: 700;
+        font-size: 26px;
+        padding-bottom: 1em
+    }
+    #action {
+        padding-bottom : 1.5em;
+    }
+    p {
+        font-size: 15px;
+        display: inline;
     }
 </style>

@@ -5,8 +5,8 @@
     import Loader, {loadSpinner, hideSpinner} from '../components/Loader.svelte';
     import { addTransaction } from '../storage/transactionHistory.js';
     import page from 'page';
-    import { Modal, Form, FormGroup, Checkbox, Button, TextInput, Select, SelectItem } from "carbon-components-svelte";
-    import { loop_guard } from 'svelte/internal';
+    import { Modal, Form, FormGroup, Checkbox, Button, TextInput, Select, SelectItem, Loading, ToastNotification } from "carbon-components-svelte";
+    // import { loop_guard } from 'svelte/internal';
 
     export let pageState;
     let loaderId = "transferLoader";
@@ -16,18 +16,24 @@
     let notify;
     let confirmed = false;
     $:canSubmit = confirmed && validData({principal, notify});
+    let loading = false;
+    let showNotification = false;
 
     function showSnackbar() {
+        showNotification = true;
         document.getElementById("snackbar").className = "show";
     }
     function hideSnackbar() {
+        showNotification = false;
         const element = document.getElementById("snackbar");
         element.className = "";
         if (nextPage) {
             // window.location.href = '/';
             pageState.transactions = true;
             pageState = pageState;
-            page('/transactions')
+            page('/transactions');
+        } else {
+            page('/');
         }
 
     }
@@ -47,12 +53,14 @@
                 shouldNotify = null;
                 break;
         }
-        loadSpinner(loaderId);
+        loading = true;
+
         nftAgent.transfer(nft, principal, shouldNotify).then((result) => {
-            hideSpinner(loaderId)
+            loading = false;
+            console.log(JSON.stringify(result));
             if ("Err" in result) {
                 console.error(JSON.stringify(result.Err))
-                message = result.Err;
+                message = JSON.stringify(result.Err);
                 nextPage = false;
             }
             if ("Ok" in result) {
@@ -86,31 +94,48 @@
     let _isAuthorized = nftAgent.isAuthorized();
 </script>
 
-<div id="transferView">
+<div id="transferView"><Loading active={loading}/>
     <Loader named={loaderId}/>
     {#await _isAuthorized then isAuthorized}
     {#if isAuthorized}
-    <Modal open=true modalHeading=""
-        primaryButtonText="Transfer NFT"
-        secondaryButtonText="Cancel"
-        hasForm=true
-        primaryButtonDisabled={!canSubmit? true: false}
-        on:submit={(e)=> {
-            e.preventDefault();
-            transfer()}}
-        on:click:button--secondary={(e)=> page(`/${nft.canister}/${nft.index}`)}
-        >
-        <h2>Transfer {nft.name} ({nft.symbol}) #{nft.index}</h2>
-        <div id="snackbar">{message}
-            <button id="snack_button" on:click={hideSnackbar}>Okay</button>
-        </div>
-        <Form
+
+    {#if showNotification}
+    <ToastNotification
+        subtitle={message}
+        caption={new Date().toLocaleString()}>
+            <Button on:click={hideSnackbar}>Okay</Button>
+    </ToastNotification>
+    {/if}
+    <div id="snackbar">{message}
+        <button id="snack_button" class="button" on:click={
+            (e) => {
+                e.preventDefault();
+                hideSnackbar();
+            }}>Okay</button>
+    </div>
+    <!-- <Modal open=true modalHeading=""
+    primaryButtonText="Transfer NFT"
+    secondaryButtonText="Cancel"
+    hasForm=true
+    primaryButtonDisabled={!canSubmit? true: false}
+    on:submit={(e)=> {
+        e.preventDefault();
+        transfer()}}
+            on:click:button--secondary={(e)=> page(`/${nft.canister}/${nft.index}`)}
+            > -->
+        <!-- <ToastNotification
+        kind="success"
+        title="Success"
+        subtitle={message}
+        caption={new Date().toLocaleString()}>
+            <Button on:click={hideSnackbar}>Okay</Button>
+    </ToastNotification> -->
+        <Form style="padding: 50px 30px 30px; border: solid 1px grey; broder-radius: 10px; border-radius: 15px;"
             on:submit={(e) => {
                 e.preventDefault();
                 transfer();
             }}
-            >
-
+            ><h2>Transfer {nft.name} ({nft.symbol}) #{nft.index}</h2>
             <FormGroup>
                 <TextInput size="large" labelText="Principal to transfer to" placeholder="Enter valid Principal..." bind:value={principal} on:change={(e) => validData({principal})}/>
                 {#if errorMessage1}
@@ -132,8 +157,10 @@
             <FormGroup>
                 <Checkbox id="checkbox-0" labelText="I understand that if this principal is wrong, I'm probably not getting this NFT back." bind:checked={confirmed}/>
             </FormGroup>
+            <Button on:click={(e)=> page(`/${nft.canister}/${nft.index}`)} type="submit">Cancel</Button>
+            <Button disabled={canSubmit? false : true} on:click={transfer} type="submit">Transfer NFT</Button>
         </Form>
-    </Modal>
+    <!-- </Modal> -->
     {:else}
         <p>You must be an authorized user to transfer NFTs out of this wallet.</p>
     {/if}

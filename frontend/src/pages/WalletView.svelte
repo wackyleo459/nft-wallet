@@ -9,6 +9,7 @@
 <div class="wallet-view">
     {#await isAuthorized() then isAuthorized}
     {#if !isAuthorized}
+    <div id="welcome_message" style="padding-top: 130px; padding-bottom: 130px;">
         <h2>
             Welcome to the nft wallet for the IC
         </h2><br/>
@@ -20,6 +21,7 @@
                 <Label>LOGIN</Label>
             </Button>
         </div>
+    </div>
     {/if}
     {#if isAuthorized}
         {#await fetchAllOwnedNfts()}
@@ -38,17 +40,13 @@
         .wallet-view {
             width: 100%;
             line-height: 1.2rem;
-            padding: 1em;
         }
         h2 {
             font-size: 28px;
         }
     }
-    @media (min-width: 425px) {
-        .wallet-view {
-            text-align: center;
-            padding: 3em;
-        }
+    #welcom_message {
+        text-align: center;
     }
     .wallet-view {
         width: 100%;
@@ -57,6 +55,8 @@
         flex-direction: column;
         font-size: 16px;
         justify-content: center;
+        padding: 0 1em 1em 1em;
+        text-align: left;
     }
     .action {
         height: 300px;
