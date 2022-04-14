@@ -9,8 +9,8 @@
         Media,
         MediaContent,
     } from '@smui/card';
-    import Button, { Label } from '@smui/button';
-    import { Tile, CopyButton } from "carbon-components-svelte";
+    // import Button, { Label } from '@smui/button';
+    import { Tile, CopyButton, Button } from "carbon-components-svelte";
     export let nft;
     export let current;
     $:current = current || 0;
@@ -61,8 +61,9 @@
         <div id="action_calls">
             {#await isAuthorized() then isAuthorized}
             {#if isAuthorized}
-            <Button id="button" variant="raised" style="width:100%" href="/{nft.canister}/{nft.index}/transfer">
-                <Label>Transfer</Label>
+            <Button type="submit" variant="raised"
+                style="width:100%; background-color: rgb(114 48 145); justify-content: center; max-width: none; font-size: 16px; color: white;" href="/{nft.canister}/{nft.index}/transfer">
+                TRANSFER
             </Button>
             {/if}
             {/await}
@@ -87,13 +88,14 @@
         }
     }
     .info_title {
-        font-size: 18px;
+        font-size: 14px;
     }
     .info_detail {
         margin-bottom: 2em;
         display: flex;
         align-items: center;
         flex-wrap: wrap;
+        font-size: 18px;
     }
     .button {
         position: relative;
@@ -121,5 +123,9 @@
     }
     #action_calls {
         padding: 2em 0;
+    }
+    a:visited {
+        text-decoration: none;
+        color: white;
     }
 </style>

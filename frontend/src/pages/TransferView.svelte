@@ -5,7 +5,7 @@
     import Loader, {loadSpinner, hideSpinner} from '../components/Loader.svelte';
     import { addTransaction } from '../storage/transactionHistory.js';
     import page from 'page';
-    import { Modal, Form, FormGroup, Checkbox, Button, TextInput, Select, SelectItem, Loading, ToastNotification } from "carbon-components-svelte";
+    import {Form, FormGroup, Checkbox, Button, TextInput, Select, SelectItem, Loading, ToastNotification } from "carbon-components-svelte";
     // import { loop_guard } from 'svelte/internal';
 
     export let pageState;
@@ -28,14 +28,12 @@
         const element = document.getElementById("snackbar");
         element.className = "";
         if (nextPage) {
-            // window.location.href = '/';
             pageState.transactions = true;
             pageState = pageState;
             page('/transactions');
         } else {
             page('/');
         }
-
     }
     function transfer() {
         if (!validData({principal, notify})) {
@@ -157,8 +155,10 @@
             <FormGroup>
                 <Checkbox id="checkbox-0" labelText="I understand that if this principal is wrong, I'm probably not getting this NFT back." bind:checked={confirmed}/>
             </FormGroup>
-            <Button on:click={(e)=> page(`/${nft.canister}/${nft.index}`)} type="submit">Cancel</Button>
-            <Button disabled={canSubmit? false : true} on:click={transfer} type="submit">Transfer NFT</Button>
+            <div style="display: flex; justify-content: space-between;">
+                <Button kind="secondary" style="width: 48%;" on:click={(e)=> page(`/${nft.canister}/${nft.index}`)} type="submit">Cancel</Button>
+                <Button style="width: 48%;" disabled={canSubmit? false : true} on:click={transfer} type="submit">Transfer NFT</Button>
+            </div>
         </Form>
     <!-- </Modal> -->
     {:else}
@@ -180,4 +180,19 @@
         flex-direction: column;
         align-items: center;
     }
+    #bt {
+        border-radius: 2px;
+        margin: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.7em;
+        color: white;
+    }
+    .button_cancel {
+        background-color: #53575e;
+    }
+    /* .button_primary {
+        background-color: #0f62fe;
+    } */
 </style>

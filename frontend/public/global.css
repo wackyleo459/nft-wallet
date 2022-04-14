@@ -41,10 +41,10 @@ a:hover {
 }
 
 a.ui:hover,
-a.button:hover {
+a.button:hover,
+a:hover {
   text-decoration: none;
 }
-
 .icon {
   height: 1em;
   width: auto;
@@ -74,7 +74,7 @@ input[type="submit"] {
   justify-content: center;
 } */
 
-button:disabled,
+/* button:disabled,
 .button:not(.ui):disabled,
 input[type="submit"]:disabled {
   border-image: conic-gradient(
@@ -89,7 +89,7 @@ input[type="submit"]:disabled {
   background-color: #aaa;
   cursor: not-allowed;
   border-radius: 5px;
-}
+} */
 
 .error {
   color: orangered;
@@ -152,11 +152,28 @@ select {
   border: solid 1px #0f62fe;
   display: flex;
   align-items: center;
+  justify-content: center;
   padding: 0.7em;
   color: white;
 }
 .button1:hover {
   background-color: #0f62fe;
+  cursor: pointer;
+}
+.button2 {
+  border-radius: 4px;
+  background-color: transparent;
+  margin: 5px;
+  border: solid 1px #f15a24;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7em;
+  color: white;
+}
+.button3:hover {
+  background-color: #f15a24;
+  cursor: pointer;
 }
 .section {
   font-size: 1.4em;

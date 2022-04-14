@@ -46,6 +46,7 @@
     .collection {
         width: inherit;
         padding-top: 10px;
+        text-align: center;
     }
     li.box:hover {
         margin-top: 3px;

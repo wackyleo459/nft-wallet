@@ -2,9 +2,9 @@
     import NFTGrid from '../components/NFTGrid.svelte';
     import { fetchAllOwnedNfts, isAuthorized } from '../nft.js';
     import {loadSpinner, hideSpinner} from '../components/Loader.svelte';
-    import Button, { Label } from '@smui/button';
+    // import Button, { Label } from '@smui/button';
     import { login } from '../components/Authenticator.svelte'
-    import { Loading } from 'carbon-components-svelte';
+    import { Loading, Button } from 'carbon-components-svelte';
 </script>
 <div class="wallet-view">
     {#await isAuthorized() then isAuthorized}
@@ -17,8 +17,9 @@
         <div class="action">
             Start adding your NFTs here.
             <br><br>
-            <Button id="button" variant="raised" on:click={login}>
-                <Label>LOGIN</Label>
+            <Button id="button" variant="raised" style="width: 200px; justify-content: center; background-color: #29ABE2; max-width: none; padding: 0; font-size: 16px;" on:click={login}>
+                <!-- <Label>LOGIN</Label> -->
+                LOGIN
             </Button>
         </div>
     </div>
@@ -45,7 +46,7 @@
             font-size: 28px;
         }
     }
-    #welcom_message {
+    #welcome_message {
         text-align: center;
     }
     .wallet-view {
@@ -55,6 +56,7 @@
         flex-direction: column;
         font-size: 16px;
         justify-content: center;
+        align-items: center;
         padding: 0 1em 1em 1em;
         text-align: left;
     }

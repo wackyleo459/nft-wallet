@@ -83,7 +83,7 @@
     <Form on:submit={(e)=> {
         e.preventDefault();
         register()}}
-        style="padding: 50px 30px 30px; border: solid 1px grey; broder-radius: 10px; border-radius: 15px;">
+        style="padding: 50px 40px 10px; border: solid 1px grey; broder-radius: 10px; border-radius: 15px;">
         <h2>Register a new NFT</h2>
         <FormGroup>
             <TextInput size="large" labelText="NFT Canister ID" placeholder="Principal" bind:value={canister} on:blur={validateCanister} on:focus={removeError}/>
@@ -103,7 +103,9 @@
             <span class="error">Missing index</span>
             {/if}
         </FormGroup>
-        <Button click={(e) => register()} type="submit" disabled={canSubmit? false: true}>Register</Button>
+        <FormGroup>
+            <Button style="width: 100%; max-width: none; justify-content: center; font-size: 16px;" click={(e) => register()} type="submit" disabled={canSubmit? false: true}>REGISTER</Button>
+        </FormGroup>
     </Form>
     {:else}
     <p>You must be an authorized user to register new NFTs to this wallet.</p>
