@@ -62,7 +62,7 @@
             {#await isAuthorized() then isAuthorized}
             {#if isAuthorized}
             <Button type="submit" variant="raised"
-                style="width:100%; background-color: rgb(114 48 145); justify-content: center; max-width: none; font-size: 16px; color: white;" href="/{nft.canister}/{nft.index}/transfer">
+                style="width:100%; background-color: rgb(114 48 145); justify-content: center; max-width: none; font-size: 16px; color: white; padding: 0;" href="/{nft.canister}/{nft.index}/transfer">
                 TRANSFER
             </Button>
             {/if}

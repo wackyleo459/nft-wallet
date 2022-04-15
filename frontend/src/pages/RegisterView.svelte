@@ -104,7 +104,7 @@
             {/if}
         </FormGroup>
         <FormGroup>
-            <Button style="width: 100%; max-width: none; justify-content: center; font-size: 16px;" type="submit" disabled={canSubmit? false: true}>REGISTER</Button>
+            <Button style="width: 100%; max-width: none; justify-content: center; font-size: 16px; padding: 0;" type="submit" disabled={canSubmit? false: true}>REGISTER</Button>
         </FormGroup>
     </Form>
     {:else}

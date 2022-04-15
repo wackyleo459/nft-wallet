@@ -71,4 +71,7 @@
         margin: auto;
        padding-top: 250px;
     }
+    .action button:hover {
+        background-color: rgb(46 119 241);
+    }
 </style>

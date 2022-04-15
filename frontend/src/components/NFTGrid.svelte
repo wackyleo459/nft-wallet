@@ -16,7 +16,7 @@
 </div>
 <div class="collection">
 {#if !nfts.length}
-    <div class="section">
+    <div class="section" id="no_collection">
         There is currently no collection.
     </div>
 {:else}
@@ -58,6 +58,9 @@
         font-weight: 700;
         font-size: 26px;
         padding-bottom: 1em
+    }
+    #no_collection {
+        font-size: 18px;
     }
     #action {
         padding-bottom : 1.5em;
