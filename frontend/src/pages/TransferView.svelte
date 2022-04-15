@@ -156,8 +156,8 @@
                 <Checkbox id="checkbox-0" labelText="I understand that if this principal is wrong, I'm probably not getting this NFT back." bind:checked={confirmed}/>
             </FormGroup>
             <div style="display: flex; justify-content: space-between;">
-                <Button kind="secondary" style="width: 48%;" on:click={(e)=> page(`/${nft.canister}/${nft.index}`)} type="submit">Cancel</Button>
-                <Button style="width: 48%;" disabled={canSubmit? false : true} on:click={transfer} type="submit">Transfer NFT</Button>
+                <Button kind="secondary" style="width: 48%;" on:click={(e)=> page(`/${nft.canister}/${nft.index}`)} type="button">Cancel</Button>
+                <Button style="width: 48%;" disabled={canSubmit? false : true} type="submit">Transfer NFT</Button>
             </div>
         </Form>
     <!-- </Modal> -->
