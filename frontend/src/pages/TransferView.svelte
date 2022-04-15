@@ -18,15 +18,13 @@
     $:canSubmit = confirmed && validData({principal, notify});
     let loading = false;
     let showNotification = false;
+    let error = false;
 
     function showSnackbar() {
         showNotification = true;
-        document.getElementById("snackbar").className = "show";
     }
     function hideSnackbar() {
         showNotification = false;
-        const element = document.getElementById("snackbar");
-        element.className = "";
         if (nextPage) {
             pageState.transactions = true;
             pageState = pageState;
@@ -57,6 +55,7 @@
             loading = false;
             console.log(JSON.stringify(result));
             if ("Err" in result) {
+                error = true;
                 console.error(JSON.stringify(result.Err))
                 message = JSON.stringify(result.Err);
                 nextPage = false;
@@ -98,36 +97,23 @@
     {#if isAuthorized}
 
     {#if showNotification}
-    <ToastNotification
-        subtitle={message}
-        caption={new Date().toLocaleString()}>
-            <Button on:click={hideSnackbar}>Okay</Button>
-    </ToastNotification>
-    {/if}
-    <div id="snackbar">{message}
-        <button id="snack_button" class="button" on:click={
-            (e) => {
-                e.preventDefault();
-                hideSnackbar();
-            }}>Okay</button>
+    <div id="toast">
+        {#if error}
+        <ToastNotification
+            kind="error" title="Failed"
+            subtitle={message}
+            caption={new Date().toLocaleString()}>
+                <Button style="margin-bottom: 1.5em; height: 2.5em; min-height: 0;" on:click={(e) => {e.preventDefault(); hideSnackbar()}}>Okay</Button>
+        </ToastNotification>
+        {/if}
+        <ToastNotification
+            kind="success" title="Success"
+            subtitle={message}
+            caption={new Date().toLocaleString()}>
+                <Button style="margin-bottom: 1.5em; height: 2.5em; min-height: 0;" on:click={(e) => {e.preventDefault(); hideSnackbar()}}>Okay</Button>
+        </ToastNotification>
     </div>
-    <!-- <Modal open=true modalHeading=""
-    primaryButtonText="Transfer NFT"
-    secondaryButtonText="Cancel"
-    hasForm=true
-    primaryButtonDisabled={!canSubmit? true: false}
-    on:submit={(e)=> {
-        e.preventDefault();
-        transfer()}}
-            on:click:button--secondary={(e)=> page(`/${nft.canister}/${nft.index}`)}
-            > -->
-        <!-- <ToastNotification
-        kind="success"
-        title="Success"
-        subtitle={message}
-        caption={new Date().toLocaleString()}>
-            <Button on:click={hideSnackbar}>Okay</Button>
-    </ToastNotification> -->
+    {/if}
         <Form style="padding: 50px 30px 30px; border: solid 1px grey; broder-radius: 10px; border-radius: 15px;"
             on:submit={(e) => {
                 e.preventDefault();
@@ -160,7 +146,6 @@
                 <Button style="width: 48%;" disabled={canSubmit? false : true} type="submit">Transfer NFT</Button>
             </div>
         </Form>
-    <!-- </Modal> -->
     {:else}
         <p>You must be an authorized user to transfer NFTs out of this wallet.</p>
     {/if}
@@ -189,10 +174,10 @@
         padding: 0.7em;
         color: white;
     }
-    .button_cancel {
-        background-color: #53575e;
+    #toast {
+        position: fixed;
+        margin: auto;
+        top: 200px;
+        z-index: 10;
     }
-    /* .button_primary {
-        background-color: #0f62fe;
-    } */
 </style>
