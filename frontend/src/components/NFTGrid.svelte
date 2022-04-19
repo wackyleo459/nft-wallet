@@ -8,11 +8,10 @@
 </script>
 <div id="action">
     <button class="button1"
-        style="margin-right: 3em; display: inline"
         on:click={(e) => pageModule('/register')}>
         + REGISTER
     </button>
-    <p>Please add your NFTs to your wallet by registering if you haven't already done so.</p>
+    <p>Please add NFTs to your wallet by registering if you haven't already done so.</p>
 </div>
 <div class="collection">
 {#if !nfts.length}
@@ -48,10 +47,6 @@
         padding-top: 10px;
         text-align: center;
     }
-    li.box:hover {
-        margin-top: 3px;
-        border-radius: 10px;
-    }
     .section {
         font-family: 'Roboto Mono', monospace;
         font-family: 'Noto Sans', sans-serif;
@@ -64,9 +59,34 @@
     }
     #action {
         padding-bottom : 1.5em;
+        display: flex;
+        align-items: center;
     }
-    p {
-        font-size: 15px;
-        display: inline;
+    @media (max-width: 375px) {
+        #action {
+            flex-direction: column;
+        }
+        p {
+            text-align: center;
+        }
+    }
+    @media (max-width: 744px) {
+        .button1 {
+            margin-right: 1em;
+            min-width: 100px;
+        }
+        p {
+            font-size: 12px;
+        }
+    }
+    @media (min-width: 651px) {
+        p {
+            font-size: 15px;
+            display: inline;
+        }
+        .button1 {
+            margin-right: 3em;
+            display: inline;
+        }
     }
 </style>
