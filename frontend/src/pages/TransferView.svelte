@@ -161,6 +161,8 @@
         font-size: 30px;
     }
     #transferView {
+        padding-top: 10%;
+        padding-bottom: 10%;
         display: flex;
         flex-direction: column;
         align-items: center;

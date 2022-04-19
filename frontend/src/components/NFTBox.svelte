@@ -3,11 +3,11 @@
 <script>
     import Copier from './Copier.svelte';
     import ContentBox from './ContentBox.svelte';
-    import Paper, { Title, Subtitle, Content } from '@smui/paper';
+    import Paper, { Title, Content } from '@smui/paper';
     export let nft;
 </script>
 
-<Paper elevation=4 color="grey">
+<Paper id="paper" elevation=4 color="grey">
     <a class="ui" href="/{nft.canister}/{nft.index}">
         <div class="preview">
             <ContentBox src={nft.preview?.value} contentType={nft.preview?.contentType}/>

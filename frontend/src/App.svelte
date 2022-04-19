@@ -109,6 +109,7 @@
         margin-bottom: 0;
         font-size:xx-large;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        font-weight: 500;
     }
 
     @media (max-width: 639px) {
@@ -206,7 +207,6 @@
     }
     #footer {
         position: relative;
-        bottom: 1rem;
         width: fit-content;
         margin: 0 auto;
         height: var(--footer-height);

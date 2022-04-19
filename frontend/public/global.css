@@ -261,3 +261,10 @@ select {
   background-color: #eee;
   color: black;
 }
+
+.smui-paper {
+  padding: 14px;
+}
+.smui-paper:hover {
+  outline: solid 4px #fbb03b;
+}

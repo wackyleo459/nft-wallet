@@ -3,7 +3,7 @@
     import * as nftAgent from '../nft';
     import { Principal } from '@dfinity/principal';
     import Loader, {loadSpinner, hideSpinner} from '../components/Loader.svelte';
-    import {Form, FormGroup, TextInput, Loading, Button } from "carbon-components-svelte";
+    import {Form, FormGroup, TextInput, Loading, Button, InlineLoading } from "carbon-components-svelte";
 
     let loading = false;
     let canister;
@@ -108,7 +108,11 @@
         </FormGroup>
     </Form>
     {:else}
+    <div class="inlineLoad"><InlineLoading/>Redirecting...</div>
     <p>You must be an authorized user to register new NFTs to this wallet.</p>
+    {#await setTimeout(()=> page('/'), 3000)}
+       ...
+    {/await}
     {/if}
     {/await}
 </div>
@@ -117,8 +121,8 @@
     .register-view {
         margin: auto;
         max-width: 650px;
-        padding-top: 130px;
-        padding-bottom: 130px;
+        padding-top: 10%;
+        padding-bottom: 10%;
     }
     h2 {
         text-align: center;
@@ -127,10 +131,13 @@
     p {
         text-align: center;
     }
-    #form_top {
-        margin-bottom: 20px;
+    .inlineLoad {
+        padding-bottom: 20px;
+        margin: auto;
+        width: fit-content;
         display: flex;
-        flex-direction: column
+        align-items: center;
+        justify-content: center;
     }
     #snack_button {
         border-radius: 4px;

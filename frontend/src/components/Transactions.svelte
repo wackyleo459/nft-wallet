@@ -1,7 +1,7 @@
 <script>
     import { transactionHistory } from '../storage/transactionHistory.js';
     import { isAuthorized } from "../nft.js";
-    import { DataTable } from "carbon-components-svelte";
+    import { DataTable, InlineLoading } from "carbon-components-svelte";
     import page from "page";
     let theme = "g70";
     $: transaction_rows = $transactionHistory.map((transaction, i) => {
@@ -39,7 +39,8 @@
     {/if}
     {:else}
       <div class="transaction">
-      No transactions record, you must login first.
+        <div class="inlineLoad"><InlineLoading />Redirecting...</div>
+        No transactions record, you must login first.
       </div>
       {#await setTimeout(()=> page('/'), 3000)}
       ...
@@ -49,7 +50,18 @@
 </div>
 
 <style>
+  .inlineLoad {
+        padding-bottom: 20px;
+        margin: auto;
+        width: fit-content;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+    }
   .transaction {
+    padding-top: 15%;
+    padding-bottom: 15%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;

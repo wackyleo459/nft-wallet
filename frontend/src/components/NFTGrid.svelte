@@ -58,7 +58,7 @@
         font-size: 18px;
     }
     #action {
-        padding-bottom : 1.5em;
+        padding-bottom : 1em;
         display: flex;
         align-items: center;
     }
