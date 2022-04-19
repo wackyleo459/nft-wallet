@@ -18,7 +18,8 @@
     <audio {src}></audio>
     {:else}
     <slot {src}>
-        <span class="filler">📝</span>
+        <!-- <span class="filler">📝</span> -->
+        <img id="default_img" src="/images/background.png" alt="background">
     </slot>
     {/if}
 </div>
@@ -45,6 +46,9 @@
         font-size: 5em;
         opacity: 30%;
         text-align: center;
+    }
+    #default_img {
+        opacity: 0.5;
     }
     img {
         display: block;
